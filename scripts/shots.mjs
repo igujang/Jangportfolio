@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer-core'
 import { mkdir } from 'node:fs/promises'
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
-const BASE = 'http://localhost:4322'
+const BASE = 'http://localhost:4323'
 const OUT = process.argv[2] || './shots'
 
 const VIEWS = [
