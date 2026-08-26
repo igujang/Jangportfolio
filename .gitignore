@@ -39,3 +39,9 @@ out/
 # ── 예외: 사이트에 실제로 쓰이는 썸네일 영상은 포함 ──
 !public/works/**/*.mp4
 !public/works/**/*.webm
+
+# ── 원본 자료 (로컬 보관, 변환본만 커밋) ──
+/Project/
+/ref/
+*.ai
+memo.txt

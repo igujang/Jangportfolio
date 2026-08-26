@@ -1,0 +1,1099 @@
+[
+  {
+    "n": "01",
+    "dir": "01 참이슬 오리지날 I BX Renewal (개인프로젝트)",
+    "slug": "chamisul",
+    "title": "참이슬 오리지날 I BX Renewal (개인프로젝트)",
+    "category": "SOJU",
+    "thumb": null,
+    "blocks": [
+      {
+        "type": "vimeo",
+        "id": "1219576314",
+        "loop": true,
+        "w": 1920,
+        "h": 1300
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/01.jpg",
+        "w": 1920,
+        "h": 1418
+      },
+      {
+        "type": "vimeo",
+        "id": "1221507628",
+        "loop": true,
+        "w": 1920,
+        "h": 2546
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/02.jpg",
+        "w": 1920,
+        "h": 1223
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/03.jpg",
+        "w": 1920,
+        "h": 517
+      },
+      {
+        "type": "vimeo",
+        "id": "1219928012",
+        "loop": true,
+        "w": 1920,
+        "h": 1283
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/04.jpg",
+        "w": 1920,
+        "h": 1087
+      },
+      {
+        "type": "vimeo",
+        "id": "1220072801",
+        "loop": true,
+        "w": 1920,
+        "h": 1283
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/05.jpg",
+        "w": 1920,
+        "h": 983
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/06.jpg",
+        "w": 1564,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/07.jpg",
+        "w": 1920,
+        "h": 512
+      },
+      {
+        "type": "vimeo",
+        "id": "1220091492",
+        "loop": true,
+        "w": 1920,
+        "h": 1454
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/08.jpg",
+        "w": 1920,
+        "h": 1739
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/09.jpg",
+        "w": 1920,
+        "h": 2178
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/10.jpg",
+        "w": 1920,
+        "h": 1851
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/11.jpg",
+        "w": 1920,
+        "h": 1732
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/12.jpg",
+        "w": 1920,
+        "h": 1509
+      },
+      {
+        "type": "vimeo",
+        "id": "1220770189",
+        "loop": true,
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/13.jpg",
+        "w": 1920,
+        "h": 2346
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/14.jpg",
+        "w": 1920,
+        "h": 1326
+      },
+      {
+        "type": "vimeo",
+        "id": "1220759075",
+        "loop": true,
+        "w": 1920,
+        "h": 1408
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/15.jpg",
+        "w": 1920,
+        "h": 1552
+      },
+      {
+        "type": "vimeo",
+        "id": "1221034137",
+        "loop": true,
+        "w": 1920,
+        "h": 2176
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/16.jpg",
+        "w": 1691,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/17.jpg",
+        "w": 1920,
+        "h": 284
+      },
+      {
+        "type": "vimeo",
+        "id": "1221043815",
+        "loop": false,
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "vimeo",
+        "id": "1221060839",
+        "loop": true,
+        "w": 1920,
+        "h": 2240
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/18.jpg",
+        "w": 1427,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/chamisul/19.jpg",
+        "w": 1920,
+        "h": 540
+      }
+    ]
+  },
+  {
+    "n": "02",
+    "dir": "02 locl l BX Renewal",
+    "slug": "locl",
+    "title": "locl I BX Renewal",
+    "category": "APP",
+    "thumb": {
+      "type": "video",
+      "src": "/works/locl/thumb.mp4",
+      "w": 1920,
+      "h": 1080
+    },
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/locl/01.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/02.jpg",
+        "w": 1920,
+        "h": 2200
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/03.jpg",
+        "w": 1919,
+        "h": 1012
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/04.jpg",
+        "w": 1920,
+        "h": 1574
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/05.jpg",
+        "w": 1817,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/06.jpg",
+        "w": 1920,
+        "h": 2142
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/07.jpg",
+        "w": 1721,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/08.jpg",
+        "w": 1920,
+        "h": 1775
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/09.jpg",
+        "w": 1920,
+        "h": 2317
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/10.jpg",
+        "w": 1811,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/11.jpg",
+        "w": 1920,
+        "h": 2243
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/12.jpg",
+        "w": 1920,
+        "h": 2507
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/13.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/14.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/15.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/16.jpg",
+        "w": 1920,
+        "h": 1070
+      },
+      {
+        "type": "image",
+        "src": "/works/locl/17.jpg",
+        "w": 1920,
+        "h": 2226
+      }
+    ]
+  },
+  {
+    "n": "03",
+    "dir": "03 Place_NE l BX Design",
+    "slug": "place-ne",
+    "title": "Place_NE I BX Design",
+    "category": "CAFE",
+    "thumb": {
+      "type": "video",
+      "src": "/works/place-ne/thumb.mp4",
+      "w": 1920,
+      "h": 1080
+    },
+    "blocks": [
+      {
+        "type": "video",
+        "src": "/works/place-ne/01.mp4",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/place-ne/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/place-ne/03.jpg",
+        "w": 1659,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/place-ne/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/place-ne/05.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/place-ne/06.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/place-ne/07.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "04",
+    "dir": "04 1853 I BX Design",
+    "slug": "1853",
+    "title": "1853 I BX Design",
+    "category": "BIKE SHOP",
+    "thumb": {
+      "type": "image",
+      "src": "/works/1853/thumb.jpg",
+      "w": 760,
+      "h": 760
+    },
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/1853/01.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/04.jpg",
+        "w": 1659,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/05.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/06.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/07.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "05",
+    "dir": "05 Dorrr l BX Design",
+    "slug": "dorrr",
+    "title": "Dorrr I BX Design",
+    "category": "GOLFWEAR",
+    "thumb": {
+      "type": "image",
+      "src": "/works/dorrr/thumb.jpg",
+      "w": 760,
+      "h": 760
+    },
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/dorrr/01.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/05.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/06.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/07.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/08.jpg",
+        "w": 2800,
+        "h": 1575
+      },
+      {
+        "type": "image",
+        "src": "/works/dorrr/09.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "06",
+    "dir": "06 지중서원 l BX Design",
+    "slug": "jijung",
+    "title": "지중서원 I BX Design",
+    "category": "HOTEL",
+    "thumb": null,
+    "blocks": [
+      {
+        "type": "vimeo",
+        "id": "1221555105",
+        "loop": true,
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/jijung/01.jpg",
+        "w": 1659,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/jijung/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/jijung/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/jijung/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/jijung/05.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/jijung/06.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "07",
+    "dir": "07 솔솔바람다님길 l BX Design",
+    "slug": "solsol",
+    "title": "솔솔바람다님길 I BX Design",
+    "category": "TRAIL",
+    "thumb": {
+      "type": "video",
+      "src": "/works/solsol/thumb.mp4",
+      "w": 1002,
+      "h": 1002
+    },
+    "blocks": [
+      {
+        "type": "video",
+        "src": "/works/solsol/01.mp4",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/05.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/06.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/07.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/08.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/solsol/09.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "08",
+    "dir": "08 쌤슐랭 I BX Design",
+    "slug": "ssamsulin",
+    "title": "쌤슐랭 I BX Design",
+    "category": "EDUCATION",
+    "thumb": {
+      "type": "video",
+      "src": "/works/ssamsulin/thumb.mp4",
+      "w": 1920,
+      "h": 1080
+    },
+    "blocks": [
+      {
+        "type": "video",
+        "src": "/works/ssamsulin/01.mp4",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/ssamsulin/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/ssamsulin/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/ssamsulin/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "video",
+        "src": "/works/ssamsulin/05.mp4",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/ssamsulin/06.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/ssamsulin/07.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/ssamsulin/08.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "09",
+    "dir": "09 판판서양주점 I BX Design",
+    "slug": "panpan",
+    "title": "판판서양주점 I BX Design",
+    "category": "PUB",
+    "thumb": null,
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/panpan/01.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/panpan/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/panpan/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/panpan/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/panpan/05.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/panpan/06.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "10",
+    "dir": "10 청해주조 I BX Design",
+    "slug": "cheonghae",
+    "title": "청해주조 I BX Design",
+    "category": "BREWERY",
+    "thumb": null,
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/cheonghae/01.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/cheonghae/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/cheonghae/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/cheonghae/04.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/cheonghae/05.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "11",
+    "dir": "11 웹개발자로드맵 I Book Cover Design",
+    "slug": "web-roadmap",
+    "title": "웹개발자로드맵 I Book Cover Design",
+    "category": "BOOK",
+    "thumb": null,
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/web-roadmap/01.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/web-roadmap/02.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/web-roadmap/03.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/web-roadmap/04.jpg",
+        "w": 1920,
+        "h": 1080
+      }
+    ]
+  },
+  {
+    "n": "12",
+    "dir": "00 대학교, 기업 교육 및 행사 디자인",
+    "slug": "event-design",
+    "title": "대학교, 기업 교육 및 행사 디자인",
+    "category": "EVENT",
+    "thumb": null,
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/event-design/01.jpg",
+        "w": 2800,
+        "h": 406
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/02.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/03.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/04.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/05.jpg",
+        "w": 1982,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/06.jpg",
+        "w": 1983,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/07.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/08.jpg",
+        "w": 1417,
+        "h": 198
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/09.jpg",
+        "w": 900,
+        "h": 2699
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/10.jpg",
+        "w": 2800,
+        "h": 1575
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/11.jpg",
+        "w": 2800,
+        "h": 1575
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/12.jpg",
+        "w": 1134,
+        "h": 255
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/13.jpg",
+        "w": 1403,
+        "h": 198
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/14.jpg",
+        "w": 1417,
+        "h": 227
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/15.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/16.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/17.jpg",
+        "w": 2800,
+        "h": 560
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/18.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/19.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/20.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/21.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/22.jpg",
+        "w": 2800,
+        "h": 1576
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/23.jpg",
+        "w": 2800,
+        "h": 1576
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/24.jpg",
+        "w": 2100,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/25.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/26.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/27.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/28.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/29.jpg",
+        "w": 1982,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/30.jpg",
+        "w": 1982,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/31.jpg",
+        "w": 500,
+        "h": 501
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/32.jpg",
+        "w": 842,
+        "h": 1191
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/33.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/34.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/35.jpg",
+        "w": 2800,
+        "h": 1595
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/36.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/37.jpg",
+        "w": 2304,
+        "h": 512
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/38.jpg",
+        "w": 2425,
+        "h": 2560
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/39.jpg",
+        "w": 2800,
+        "h": 622
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/40.jpg",
+        "w": 1651,
+        "h": 881
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/41.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/42.jpg",
+        "w": 1417,
+        "h": 255
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/43.jpg",
+        "w": 934,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/44.jpg",
+        "w": 2800,
+        "h": 1380
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/45.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/46.jpg",
+        "w": 1980,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/47.jpg",
+        "w": 2800,
+        "h": 1575
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/48.jpg",
+        "w": 2800,
+        "h": 2100
+      }
+    ]
+  }
+]

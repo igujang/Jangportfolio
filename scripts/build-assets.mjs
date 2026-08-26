@@ -1,0 +1,176 @@
+/**
+ * 원본 자료(Project/)를 웹용으로 변환해 public/works/ 와 content/works.json 을 만든다.
+ *  - 이미지  : 긴 변 2800px 이하로 축소, 고품질 압축
+ *  - GIF     : mp4 루프 영상으로 변환 (화질↑ 용량↓)
+ *  - .txt    : 비메오 iframe에서 영상 ID·비율·루프여부 추출
+ * 원본은 절대 수정하지 않는다.
+ */
+import { readdir, mkdir, rm, writeFile, readFile, stat } from 'node:fs/promises'
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
+import path from 'node:path'
+import sharp from 'sharp'
+
+const run = promisify(execFile)
+const ROOT = process.cwd()
+const SRC = path.join(ROOT, 'Project')
+const OUT = path.join(ROOT, 'public', 'works')
+
+const MAX_EDGE = 2800 // 비핸스 권장 1400px의 2배 (고해상도 화면 대응)
+const JPEG_Q = 90 // 일반 웹 기본(75~80)보다 높게
+
+/** "순서와 카테고리 분류.txt" 기준 */
+const PROJECTS = [
+  { n: '01', dir: '01 참이슬 오리지날 I BX Renewal (개인프로젝트)', slug: 'chamisul', title: '참이슬 오리지날 I BX Renewal (개인프로젝트)', category: 'SOJU' },
+  { n: '02', dir: '02 locl l BX Renewal', slug: 'locl', title: 'locl I BX Renewal', category: 'APP' },
+  { n: '03', dir: '03 Place_NE l BX Design', slug: 'place-ne', title: 'Place_NE I BX Design', category: 'CAFE' },
+  { n: '04', dir: '04 1853 I BX Design', slug: '1853', title: '1853 I BX Design', category: 'BIKE SHOP' },
+  { n: '05', dir: '05 Dorrr l BX Design', slug: 'dorrr', title: 'Dorrr I BX Design', category: 'GOLFWEAR' },
+  { n: '06', dir: '06 지중서원 l BX Design', slug: 'jijung', title: '지중서원 I BX Design', category: 'HOTEL' },
+  { n: '07', dir: '07 솔솔바람다님길 l BX Design', slug: 'solsol', title: '솔솔바람다님길 I BX Design', category: 'TRAIL' },
+  { n: '08', dir: '08 쌤슐랭 I BX Design', slug: 'ssamsulin', title: '쌤슐랭 I BX Design', category: 'EDUCATION' },
+  { n: '09', dir: '09 판판서양주점 I BX Design', slug: 'panpan', title: '판판서양주점 I BX Design', category: 'PUB' },
+  { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY' },
+  { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK' },
+  { n: '12', dir: '00 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT' },
+]
+
+const isImage = (f) => /\.(jpe?g|png|webp)$/i.test(f)
+const isGif = (f) => /\.gif$/i.test(f)
+const isTxt = (f) => /\.txt$/i.test(f)
+const isThumb = (f) => /thum/i.test(f)
+
+/** 파일명 끝의 숫자로 정렬 (1.jpg, 2.jpg, 10.jpg → 올바른 순서) */
+function orderKey(f) {
+  const m = path.basename(f, path.extname(f)).match(/(\d+)\s*$/)
+  return m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER
+}
+
+/** 비메오 iframe 파싱 */
+async function parseVimeo(file) {
+  const html = await readFile(file, 'utf8')
+  const id = html.match(/player\.vimeo\.com\/video\/(\d+)/)?.[1]
+  if (!id) return null
+  return {
+    type: 'vimeo',
+    id,
+    loop: /background=1/.test(html), // 컨트롤 없이 무한 반복
+    w: Number(html.match(/width="(\d+)"/)?.[1] || 1920),
+    h: Number(html.match(/height="(\d+)"/)?.[1] || 1080),
+  }
+}
+
+/** 이미지 축소 + 압축 */
+async function convertImage(src, dest) {
+  const img = sharp(src, { limitInputPixels: false })
+  const meta = await img.metadata()
+  const long = Math.max(meta.width, meta.height)
+  const pipeline =
+    long > MAX_EDGE
+      ? img.resize({
+          width: meta.width >= meta.height ? MAX_EDGE : null,
+          height: meta.height > meta.width ? MAX_EDGE : null,
+          kernel: 'lanczos3',
+          withoutEnlargement: true,
+        })
+      : img
+  await pipeline.jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true }).toFile(dest)
+  const out = await sharp(dest).metadata()
+  return { w: out.width, h: out.height }
+}
+
+/** GIF → mp4 루프 영상 */
+async function convertGif(src, dest) {
+  await run(
+    'ffmpeg',
+    ['-y', '-i', src, '-movflags', '+faststart', '-pix_fmt', 'yuv420p', '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2:flags=lanczos', '-crf', '20', '-an', dest],
+    { maxBuffer: 1 << 26 }
+  )
+  const { stdout } = await run('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', dest])
+  const [w, h] = stdout.trim().split(',').map(Number)
+  return { w, h }
+}
+
+const mb = (n) => (n / 1048576).toFixed(1)
+
+async function main() {
+  await rm(OUT, { recursive: true, force: true })
+  await mkdir(OUT, { recursive: true })
+
+  const manifest = []
+  let srcTotal = 0
+  let outTotal = 0
+
+  for (const p of PROJECTS) {
+    const srcDir = path.join(SRC, p.dir)
+    const outDir = path.join(OUT, p.slug)
+    await mkdir(outDir, { recursive: true })
+
+    const files = await readdir(srcDir)
+    const thumbFile = files.find(isThumb) ?? null
+    const bodyFiles = files.filter((f) => f !== thumbFile && (isImage(f) || isGif(f) || isTxt(f)))
+
+    // 12번 폴더는 파일명에 순번이 없으므로 이름순, 나머지는 숫자순
+    bodyFiles.sort(
+      p.slug === 'event-design'
+        ? (a, b) => a.localeCompare(b, 'ko')
+        : (a, b) => orderKey(a) - orderKey(b) || a.localeCompare(b, 'ko')
+    )
+
+    // ── 썸네일 ──
+    let thumb = null
+    if (thumbFile) {
+      const s = path.join(srcDir, thumbFile)
+      srcTotal += (await stat(s)).size
+      if (isGif(thumbFile)) {
+        const d = path.join(outDir, 'thumb.mp4')
+        const { w, h } = await convertGif(s, d)
+        outTotal += (await stat(d)).size
+        thumb = { type: 'video', src: `/works/${p.slug}/thumb.mp4`, w, h }
+      } else {
+        const d = path.join(outDir, 'thumb.jpg')
+        const { w, h } = await convertImage(s, d)
+        outTotal += (await stat(d)).size
+        thumb = { type: 'image', src: `/works/${p.slug}/thumb.jpg`, w, h }
+      }
+    }
+
+    // ── 본문 ──
+    const blocks = []
+    let i = 0
+    for (const f of bodyFiles) {
+      const s = path.join(srcDir, f)
+      if (isTxt(f)) {
+        const v = await parseVimeo(s)
+        if (v) blocks.push(v)
+        continue
+      }
+      srcTotal += (await stat(s)).size
+      const idx = String(++i).padStart(2, '0')
+      if (isGif(f)) {
+        const d = path.join(outDir, `${idx}.mp4`)
+        const { w, h } = await convertGif(s, d)
+        outTotal += (await stat(d)).size
+        blocks.push({ type: 'video', src: `/works/${p.slug}/${idx}.mp4`, w, h })
+      } else {
+        const d = path.join(outDir, `${idx}.jpg`)
+        const { w, h } = await convertImage(s, d)
+        outTotal += (await stat(d)).size
+        blocks.push({ type: 'image', src: `/works/${p.slug}/${idx}.jpg`, w, h })
+      }
+    }
+
+    manifest.push({ ...p, thumb, blocks })
+    const v = blocks.filter((b) => b.type === 'vimeo').length
+    console.log(`  ${p.n} ${p.slug.padEnd(13)} 블록 ${String(blocks.length).padStart(2)}개 (비메오 ${v}) ${thumb ? '썸네일 ' + thumb.type : '썸네일 없음'}`)
+  }
+
+  await mkdir(path.join(ROOT, 'content'), { recursive: true })
+  await writeFile(path.join(ROOT, 'content', 'works.json'), JSON.stringify(manifest, null, 2))
+  console.log(`\n  원본 ${mb(srcTotal)}MB  →  변환 ${mb(outTotal)}MB  (${Math.round((1 - outTotal / srcTotal) * 100)}% 감소)`)
+}
+
+main().catch((e) => {
+  console.error(e)
+  process.exit(1)
+})
