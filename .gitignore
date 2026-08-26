@@ -18,6 +18,7 @@ out/
 *.log
 .env
 .env.local
+.vercel
 
 # ── 디자인 원본 (웹용으로 변환한 것만 커밋) ──
 *.ai
@@ -29,9 +30,12 @@ out/
 *.aep
 *.prproj
 *.mov
-*.mp4
 *.zip
 
 # 원본/작업 파일 보관용 폴더
 /source/
 /_raw/
+
+# ── 예외: 사이트에 실제로 쓰이는 썸네일 영상은 포함 ──
+!public/works/**/*.mp4
+!public/works/**/*.webm
