@@ -71,7 +71,16 @@ export default function WorkIndex({ works }: { works: Work[] }) {
 
   return (
     <main className="relative min-h-[100svh] px-[5vw] py-[5vh] md:px-[4vw] xl:px-[3.2vw] xl:py-[4vh]">
-      <ul className="index-row-gap flex flex-col pb-[50vh]">
+      {/* 하단 여백:
+          - 모바일(터치) — 스크롤로 마지막 항목을 화면 중앙까지 끌어올려야
+            선택되므로 화면 절반만큼 필요하다.
+          - 데스크탑(호버) — 그 이유가 없으니 우측 하단 썸네일에 가리지
+            않을 정도만 남긴다. 안 그러면 리스트 끝난 뒤 여백만 덩그러니
+            남아 보인다(무한 루프 대신 택한 방식). */}
+      <ul
+        className="index-row-gap flex flex-col"
+        style={{ paddingBottom: isTouch ? '50vh' : 'clamp(200px, 24vw, 460px)' }}
+      >
         {/* ── 이름 (프로젝트와 같은 크기, 맨 위) ── */}
         <li
           ref={(el) => {

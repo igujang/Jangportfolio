@@ -64,7 +64,7 @@ body {
 ──────────────────────────────────────────────────── */
 .index-title {
   font-size: clamp(1.5rem, 3.75vw, 4.5rem); /* 72px @1920 */
-  font-weight: 600; /* SemiBold — 참고 사이트는 Regular지만 사용자가 지정 */
+  font-weight: 500; /* Medium — SemiBold가 너무 두꺼워 보여 사용자가 변경 */
   line-height: 1;
   letter-spacing: -0.05em;
 }
