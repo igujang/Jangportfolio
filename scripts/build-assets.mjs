@@ -4,6 +4,13 @@
  *  - GIF     : mp4 루프 영상으로 변환 (화질↑ 용량↓)
  *  - .txt    : 비메오 iframe에서 영상 ID·비율·루프여부 추출
  * 원본은 절대 수정하지 않는다.
+ *
+ * PROJECTS 옵션
+ *  - gap        : 상세 페이지에서 이미지 사이 세로 간격(px)
+ *  - award      : 수상·선정 표기
+ *  - blank      : 목록에만 남기고 내용은 비움
+ *  - skipFirst  : 첫 장(표지)을 본문에서 뺀다. 원본은 그대로 두고 여기서만
+ *                 걸러내므로, 되돌리려면 이 줄만 지우면 된다.
  */
 import { readdir, mkdir, rm, writeFile, readFile, stat } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
@@ -24,13 +31,13 @@ const PROJECTS = [
   { n: '01', dir: '01 참이슬 오리지날 I BX Renewal (개인프로젝트)', slug: 'chamisul', title: '참이슬 오리지날 I BX Renewal (개인프로젝트)', category: 'SOJU', gap: 0 },
   { n: '02', dir: '02 locl l BX Renewal', slug: 'locl', title: 'locl I BX Renewal', category: 'APP', gap: 0 },
   { n: '03', dir: '03 Place_NE l BX Design', slug: 'place-ne', title: 'Place_NE I BX Design', category: 'CAFE', gap: 60, award: '노트폴리오 PICK 선정' },
-  { n: '04', dir: '04 1853 I BX Design', slug: '1853', title: '1853 I BX Design', category: 'BIKE SHOP', gap: 60 },
+  { n: '04', dir: '04 1853 I BX Design', slug: '1853', title: '1853 I BX Design', category: 'BIKE SHOP', gap: 60, skipFirst: true },
   { n: '05', dir: '05 Dorrr l BX Design', slug: 'dorrr', title: 'Dorrr I BX Design', category: 'GOLFWEAR', gap: 60 },
   { n: '06', dir: '06 지중서원 l BX Design', slug: 'jijung', title: '지중서원 I BX Design', category: 'HOTEL', gap: 60 },
   { n: '07', dir: '07 솔솔바람다님길 l BX Design', slug: 'solsol', title: '솔솔바람다님길 I BX Design', category: 'TRAIL', gap: 60 },
   { n: '08', dir: '08 쌤슐랭 I BX Design', slug: 'ssamsulin', title: '쌤슐랭 I BX Design', category: 'EDUCATION', gap: 60 },
   { n: '09', dir: '09 판판서양주점 I BX Design', slug: 'panpan', title: '판판서양주점 I BX Design', category: 'PUB', gap: 60 },
-  { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY', gap: 60 },
+  { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY', gap: 60, skipFirst: true },
   { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK', gap: 60 },
   { n: '12', dir: '00 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 60, blank: true },
 ]
@@ -190,6 +197,13 @@ async function main() {
 
     // 12번 폴더는 파일명에 순번이 없으므로 이름순, 나머지는 숫자순
     bodyFiles.sort(compareByNumber)
+
+    // 표지 한 장 제외 — 목록 썸네일과 겹쳐서 상세를 열면 같은 그림이
+    // 한 번 더 나온다. 원본은 두고 여기서만 걸러낸다.
+    if (p.skipFirst && bodyFiles.length) {
+      const [dropped] = bodyFiles.splice(0, 1)
+      console.log(`  ${p.n} ${p.slug} — 표지 제외: ${dropped}`)
+    }
 
     // ── 썸네일 ──
     let thumb = null

@@ -383,6 +383,7 @@
     "title": "1853 I BX Design",
     "category": "BIKE SHOP",
     "gap": 60,
+    "skipFirst": true,
     "thumb": {
       "type": "image",
       "src": "/works/1853/thumb.jpg",
@@ -399,14 +400,14 @@
       {
         "type": "image",
         "src": "/works/1853/02.jpg",
-        "w": 1920,
-        "h": 1080
+        "w": 1659,
+        "h": 2800
       },
       {
         "type": "image",
         "src": "/works/1853/03.jpg",
-        "w": 1659,
-        "h": 2800
+        "w": 1920,
+        "h": 1080
       },
       {
         "type": "image",
@@ -417,12 +418,6 @@
       {
         "type": "image",
         "src": "/works/1853/05.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/1853/06.jpg",
         "w": 1920,
         "h": 1080
       }
@@ -750,6 +745,7 @@
     "title": "청해주조 I BX Design",
     "category": "BREWERY",
     "gap": 60,
+    "skipFirst": true,
     "thumb": {
       "type": "image",
       "src": "/works/cheonghae/thumb.jpg",
@@ -778,12 +774,6 @@
       {
         "type": "image",
         "src": "/works/cheonghae/04.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/cheonghae/05.jpg",
         "w": 1920,
         "h": 1080
       }
