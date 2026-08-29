@@ -63,16 +63,17 @@ body {
    한 화면에 욱여넣지 않고 자연스럽게 스크롤되게 둔다.
 ──────────────────────────────────────────────────── */
 .index-title {
-  display: inline-block; /* JS가 scrollWidth로 실제 필요한 폭을 재려면 필요 */
-  font-size: clamp(1.5rem, 3.75vw, 4.5rem); /* 72px @1920 */
+  display: inline-block;
+  font-size: clamp(1.05rem, 3.75vw, 4.5rem); /* 72px @1920. 모든 행이 같은 clamp를 쓰므로
+    화면 폭이 같으면 프로젝트와 무관하게 항상 같은 크기 — 위계가 깨지지 않는다. */
   font-weight: 500; /* Medium — SemiBold가 너무 두꺼워 보여 사용자가 변경 */
   line-height: 1;
   letter-spacing: -0.05em;
-  white-space: nowrap; /* 줄바꿈 대신 폭에 맞춰 폰트 크기를 줄인다 (WorkIndex.tsx useFitRow) */
+  white-space: nowrap;
 }
 
 .index-chip {
-  display: inline-block; /* scrollWidth 측정용 */
+  display: inline-block;
   font-size: clamp(0.75rem, 0.73vw, 0.875rem); /* 14px @1920 */
   font-weight: 400; /* Regular — 사용자 확정 */
   letter-spacing: normal;
@@ -91,6 +92,19 @@ body {
 
 .index-row-gap {
   gap: clamp(1.25rem, 2.08vw, 2.5rem); /* 40px @1920 */
+}
+
+/* 태블릿 · 모바일(<1280px) — 버튼(카테고리·번호)을 제목 크기의
+   정확히 절반으로 고정한다. 제목 clamp(1.05rem, 3.75vw, ...)을 그대로
+   반으로 나눈 값(0.525rem, 1.875vw)이므로, 화면 폭이 바뀌어도 이
+   구간 안에서는 항상 "버튼 = 제목의 50%" 비율이 유지된다.
+   제목 자체는 건드리지 않는다 — 프로젝트마다 다르게 줄이면 위계가
+   깨진다는 피드백에 따라, 자동 축소를 버튼 쪽으로만 옮긴 것. */
+@media (max-width: 1279px) {
+  .index-chip,
+  .index-num {
+    font-size: clamp(0.525rem, 1.875vw, 2.25rem);
+  }
 }
 
 /* 스크롤바 숨김 */

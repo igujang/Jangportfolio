@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -148,48 +148,6 @@ export default function WorkIndex({ works }: { works: Work[] }) {
   )
 }
 
-/**
- * 제목 · 카테고리 버튼 · 번호가 한 줄에 다 들어가도록, 셋을 같은 비율로
- * 줄인다. 제목만 줄이면 버튼·번호가 자리가 없어 아래로 밀려났다 —
- * 셋을 하나의 세트로 보고 행(li) 폭에 맞춰 함께 축소한다.
- * 실제로 필요한 만큼만 줄이므로 짧은 제목은 원래 크기 그대로 유지된다.
- */
-function useFitRow() {
-  const ref = useRef<HTMLAnchorElement>(null)
-
-  useLayoutEffect(() => {
-    const link = ref.current
-    if (!link) return
-    const title = link.querySelector<HTMLElement>('.index-title')
-    const chip = link.querySelector<HTMLElement>('.index-chip')
-    const num = link.querySelector<HTMLElement>('.index-num')
-    if (!title || !chip || !num) return
-    const parts = [title, chip, num]
-
-    const fit = () => {
-      const row = link.closest('li')
-      if (!row) return
-      // CSS clamp 기준값으로 리셋 후 다시 측정 (화면이 넓어지면 원래 크기로 복귀)
-      for (const el of parts) el.style.fontSize = ''
-      const available = row.clientWidth
-      const needed = link.scrollWidth
-      if (needed > available && available > 0) {
-        const scale = (available / needed) * 0.98
-        for (const el of parts) {
-          const current = parseFloat(getComputedStyle(el).fontSize)
-          el.style.fontSize = `${Math.floor(current * scale)}px`
-        }
-      }
-    }
-
-    fit()
-    window.addEventListener('resize', fit)
-    return () => window.removeEventListener('resize', fit)
-  }, [])
-
-  return ref
-}
-
 function Row({
   href,
   title,
@@ -208,14 +166,12 @@ function Row({
   onFocus: () => void
 }) {
   const t = { duration: DUR, ease: EASE }
-  const rowRef = useFitRow()
   return (
     <Link
-      ref={rowRef}
       href={href}
       onMouseEnter={onHover}
       onFocus={onFocus}
-      className="flex items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] outline-none"
+      className="flex flex-wrap items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] gap-y-1 outline-none"
     >
       <motion.span
         animate={{ color: activeState ? INK : MUTED }}
