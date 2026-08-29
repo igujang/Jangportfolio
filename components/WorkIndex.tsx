@@ -53,8 +53,12 @@ export default function WorkIndex({ works }: { works: Work[] }) {
     window.setTimeout(() => router.push(href), TAP_DELAY)
   }
 
-  // 강조 판정 — 데스크탑은 호버 중인 행, 터치는 방금 탭한 행
-  const isOn = (i: number) => (isTouch ? pressed === i : active === i)
+  // 강조 판정 — 데스크탑은 호버 중인 행.
+  // 터치는 아무것도 안 눌렀을 때 이름 행이 검정이고 나머지는 회색이다.
+  // 프로젝트를 탭하면 검정이 그쪽으로 옮겨가고, 모달을 닫고 돌아오면
+  // (pressed가 null로 돌아가면서) 다시 이름 행으로 되돌아온다.
+  const isOn = (i: number) =>
+    isTouch ? (pressed === null ? i === NAME_ROW : pressed === i) : active === i
   const workAt = (i: number) => (i === NAME_ROW ? null : works[i])
 
   return (
