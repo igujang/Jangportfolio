@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { Work } from '@/lib/works'
 
@@ -14,12 +14,13 @@ const INK = '#0a0a0a'
 const MUTED = '#c4c4c4'
 const EASE = [0.22, 1, 0.36, 1] as const
 const DUR = 0.28
-// 탭한 제목이 검정으로 물드는 걸 눈으로 확인할 만큼만 기다렸다가 이동한다.
-// 색 전환(DUR 0.28s)이 끝나기 전에 출발해야 끊긴 느낌이 없다.
-const TAP_DELAY = 200
+// 탭 → 제목이 검정으로 물들고 썸네일이 떠오를 만큼만 기다렸다가 이동한다.
+// 더 늘리면 연출은 살지만 반복해서 훑어볼 때 답답해진다.
+const TAP_DELAY = 260
 
 export default function WorkIndex({ works }: { works: Work[] }) {
   const router = useRouter()
+  const pathname = usePathname()
   const [active, setActive] = useState(0)
   const [isTouch, setIsTouch] = useState(false)
   // 터치에서 방금 누른 행. 평소엔 아무것도 강조하지 않는다(전부 회색).
@@ -34,9 +35,15 @@ export default function WorkIndex({ works }: { works: Work[] }) {
     return () => mq.removeEventListener('change', sync)
   }, [])
 
+  // 모달을 닫고 인덱스로 돌아오면 탭 흔적(검정 제목·썸네일)을 지운다.
+  // 모달이 열려 있는 동안(pathname !== '/')은 그대로 둔다 — 어차피 가려진다.
+  useEffect(() => {
+    if (pathname === '/') setPressed(null)
+  }, [pathname])
+
   const hover = (i: number) => (isTouch ? undefined : () => setActive(i))
 
-  // 터치 — 탭하면 제목이 검정으로 바뀌는 걸 보여준 뒤 프로젝트로 넘어간다.
+  // 터치 — 탭하면 제목이 검정으로 물들고 썸네일이 떠오른 뒤 프로젝트로 넘어간다.
   // href는 <Link>에 그대로 남겨둔다(프리페치·새 탭·크롤러). 터치일 때만 가로챈다.
   const tap = (i: number, href: string) => (e: React.MouseEvent) => {
     if (!isTouch) return
@@ -48,21 +55,14 @@ export default function WorkIndex({ works }: { works: Work[] }) {
 
   // 강조 판정 — 데스크탑은 호버 중인 행, 터치는 방금 탭한 행
   const isOn = (i: number) => (isTouch ? pressed === i : active === i)
-  const current = active === NAME_ROW ? null : works[active]
+  const workAt = (i: number) => (i === NAME_ROW ? null : works[i])
 
   return (
-    <main className="relative flex min-h-[100svh] flex-col px-[5vw] py-[5vh] md:px-[4vw] xl:px-[3.2vw] xl:py-[4vh]">
-      {/* 하단 여백은 두지 않는다.
-          - 데스크탑(xl) — 썸네일은 화면 우측 하단에 떠 있고, 그 높이 대역까지
-            내려오는 건 제목이 짧은 아래쪽 행들뿐이라 겹치지 않는다.
-            리스트는 내용 높이 그대로 두고 자연스럽게 스크롤되게 한다.
-          - 터치(<xl) — 13개 행이 화면 절반밖에 못 채워서 아래가 휑하게 비었다.
-            (제목은 clamp 최솟값 16.8px에 걸려 있고, 그 크기에서 이미 가장 긴
-             행이 가로를 거의 다 쓰므로 키울 수도 없다.)
-            flex-1 + justify-between으로 남는 높이를 행 사이에 고르게 나눠
-            리스트가 화면을 꽉 채우게 한다. index-row-gap이 최소 간격 역할을
-            하므로, 작업이 늘어 내용이 화면보다 커지면 저절로 원래대로 돌아간다. */}
-      <ul className="index-row-gap flex flex-1 flex-col justify-between xl:flex-none xl:justify-start">
+    <main className="relative min-h-[100svh] px-[5vw] py-[5vh] md:px-[4vw] xl:px-[3.2vw] xl:py-[4vh]">
+      {/* 행 간격은 index-row-gap 하나로 끝낸다. 터치에서 화면 높이에 맞춰
+          간격을 벌려 봤더니(flex-1 + justify-between) 45px씩 떠서 리스트가
+          성글어 보였다 — 아래에 여백이 남더라도 간격을 유지하는 편이 낫다. */}
+      <ul className="index-row-gap flex flex-col">
         {/* ── 이름 (프로젝트와 같은 크기, 맨 위) ── */}
         <li>
           <Row
@@ -94,34 +94,38 @@ export default function WorkIndex({ works }: { works: Work[] }) {
         ))}
       </ul>
 
-      {/* ── 썸네일 (우측 하단 고정, 1:1) ──
-          호버로 항목을 고르는 환경(xl 이상)에서만 띄운다. 그 아래는 터치라
-          가리킬 수단이 없어 썸네일이 보여줄 것도 없다.
-
+      {/* ── 썸네일 · 데스크탑 (우측 하단 고정, 호버를 따라감) ──
           크기는 400px 고정 — 창 폭에 따라 줄이지 않는다. 예전엔 제목을
           침범할까 봐 20.83vw로 줄였는데, 실측해 보니 썸네일 높이 대역까지
           닿는 건 제목이 짧은 아래쪽 행들뿐이라 1280px에서도 최소 26px 여유가
           남는다(긴 제목인 참이슬·locl은 리스트 위쪽이라 최대 스크롤로도
           닿지 못한다). 오프셋 2.08vw는 그대로 둔다 — 48px 고정으로 바꾸면
           1280px에서 그 26px 여유가 4px까지 줄어든다. */}
-      <div className="pointer-events-none fixed z-10 hidden xl:block xl:bottom-[2.08vw] xl:right-[2.08vw]">
-        <div className="relative aspect-square w-[400px] overflow-hidden rounded-[24px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05]">
-          {/* mode="wait" 제거 — 이전 것이 사라진 뒤에 다음 것이 뜨면 교체가
-              느려 보인다. 겹쳐서 동시에 크로스페이드되게 한다. */}
-          <AnimatePresence>
-            <motion.div
-              key={current?.slug ?? 'profile'}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: EASE }}
-              className="absolute inset-0"
-            >
-              <ThumbBody work={current} />
-            </motion.div>
-          </AnimatePresence>
-        </div>
+      <div className="pointer-events-none fixed bottom-[2.08vw] right-[2.08vw] z-10 hidden xl:block">
+        <ThumbCard work={workAt(active)} className="w-[400px]" />
       </div>
+
+      {/* ── 썸네일 · 터치 (탭한 순간에만 잠깐) ──
+          태블릿·모바일에는 호버가 없어서 썸네일을 가만히 띄워 두면 무엇을
+          가리키는 건지 알 수 없다. 그래서 평소엔 감춰 두고, 탭하는 순간
+          그 프로젝트 썸네일이 떠올랐다가 곧바로 모달로 이어지게 한다.
+          — 선택 표시기가 아니라 진입 연출의 일부다.
+          화면 폭의 60%(최대 360px). 리스트 글자 위에 걸치지만 TAP_DELAY
+          동안만 보이고 바로 모달이 덮으므로 문제되지 않는다. */}
+      <AnimatePresence>
+        {pressed !== null && (
+          <motion.div
+            key="tap-thumb"
+            initial={{ opacity: 0, scale: 0.88 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.2, ease: EASE }}
+            className="pointer-events-none fixed bottom-[24px] right-[24px] z-10 xl:hidden"
+          >
+            <ThumbCard work={workAt(pressed)} className="w-[min(60vw,360px)]" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   )
 }
@@ -181,6 +185,30 @@ function Row({
         [{num}]
       </motion.span>
     </Link>
+  )
+}
+
+/** 둥근 흰 상자 안에 썸네일 하나. 데스크탑·터치가 같은 모양을 쓴다. */
+function ThumbCard({ work, className }: { work: Work | null; className: string }) {
+  return (
+    <div
+      className={`relative aspect-square overflow-hidden rounded-[24px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05] ${className}`}
+    >
+      {/* mode="wait" 제거 — 이전 것이 사라진 뒤에 다음 것이 뜨면 교체가
+          느려 보인다. 겹쳐서 동시에 크로스페이드되게 한다. */}
+      <AnimatePresence>
+        <motion.div
+          key={work?.slug ?? 'profile'}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, ease: EASE }}
+          className="absolute inset-0"
+        >
+          <ThumbBody work={work} />
+        </motion.div>
+      </AnimatePresence>
+    </div>
   )
 }
 
