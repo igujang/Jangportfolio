@@ -63,10 +63,12 @@ body {
    한 화면에 욱여넣지 않고 자연스럽게 스크롤되게 둔다.
 ──────────────────────────────────────────────────── */
 .index-title {
+  display: inline-block; /* JS가 scrollWidth로 실제 필요한 폭을 재려면 필요 */
   font-size: clamp(1.5rem, 3.75vw, 4.5rem); /* 72px @1920 */
   font-weight: 500; /* Medium — SemiBold가 너무 두꺼워 보여 사용자가 변경 */
   line-height: 1;
   letter-spacing: -0.05em;
+  white-space: nowrap; /* 줄바꿈 대신 폭에 맞춰 폰트 크기를 줄인다 (WorkIndex.tsx useFitTitle) */
 }
 
 .index-chip {

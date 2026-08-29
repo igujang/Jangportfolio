@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -34,7 +34,11 @@ export default function WorkIndex({ works }: { works: Work[] }) {
       setActive(0)
       return
     }
-    const line = window.innerHeight / 2
+    // 선택 기준선을 화면 정중앙(50%)이 아니라 아래쪽(65%)에 둔다.
+    // 기준선이 아래로 내려갈수록 마지막 항목이 그 지점까지 닿는 데 필요한
+    // 스크롤 여유(=하단 여백)가 줄어든다 — 썸네일을 위해 비워뒀던 큰 공백을
+    // 없애면서도 스크롤로 선택되는 느낌은 그대로 유지하기 위함.
+    const line = window.innerHeight * 0.65
     let best = 0
     let bestDist = Infinity
     rowRefs.current.forEach((el, i) => {
@@ -72,14 +76,14 @@ export default function WorkIndex({ works }: { works: Work[] }) {
   return (
     <main className="relative min-h-[100svh] px-[5vw] py-[5vh] md:px-[4vw] xl:px-[3.2vw] xl:py-[4vh]">
       {/* 하단 여백:
-          - 모바일(터치) — 스크롤로 마지막 항목을 화면 중앙까지 끌어올려야
-            선택되므로 화면 절반만큼 필요하다.
-          - 데스크탑(호버) — 그 이유가 없으니 우측 하단 썸네일에 가리지
-            않을 정도만 남긴다. 안 그러면 리스트 끝난 뒤 여백만 덩그러니
-            남아 보인다(무한 루프 대신 택한 방식). */}
+          - 모바일(터치) — 기준선을 65%로 내린 덕분에 예전 50vh보다
+            훨씬 적은 여유만 있어도 마지막 항목이 선택된다.
+          - 데스크탑(호버) — 우측 하단 썸네일에 가리지 않을 정도만 남긴다.
+            (무한 루프 대신 유한한 목록으로 가되, 끝난 뒤 여백만
+            덩그러니 남지 않게 한다) */}
       <ul
         className="index-row-gap flex flex-col"
-        style={{ paddingBottom: isTouch ? '50vh' : 'clamp(200px, 24vw, 460px)' }}
+        style={{ paddingBottom: isTouch ? '35vh' : 'clamp(200px, 24vw, 460px)' }}
       >
         {/* ── 이름 (프로젝트와 같은 크기, 맨 위) ── */}
         <li
@@ -119,9 +123,11 @@ export default function WorkIndex({ works }: { works: Work[] }) {
         ))}
       </ul>
 
-      {/* ── 썸네일 (우측 하단 고정, 1:1) ── */}
-      <div className="pointer-events-none fixed bottom-[4vh] right-[5vw] z-10 xl:bottom-[2.08vw] xl:right-[2.08vw]">
-        <div className="relative aspect-square w-[148px] overflow-hidden rounded-[16px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05] sm:w-[200px] md:w-[280px] md:rounded-[24px] xl:w-[clamp(280px,20.83vw,400px)] xl:rounded-[24px]">
+      {/* ── 썸네일 (우측 하단 고정, 1:1) ──
+          모바일에서는 숨긴다 — 화면이 좁아 리스트와 겹쳐 보이고,
+          태블릿 이상에서만 노출해도 충분하다. */}
+      <div className="pointer-events-none fixed z-10 hidden md:block md:bottom-[48px] md:right-[48px] xl:bottom-[2.08vw] xl:right-[2.08vw]">
+        <div className="relative aspect-square w-[200px] overflow-hidden rounded-[24px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05] xl:w-[clamp(280px,20.83vw,400px)]">
           {/* mode="wait" 제거 — 이전 것이 사라진 뒤에 다음 것이 뜨면 교체가
               느려 보인다. 겹쳐서 동시에 크로스페이드되게 한다. */}
           <AnimatePresence>
@@ -142,6 +148,39 @@ export default function WorkIndex({ works }: { works: Work[] }) {
   )
 }
 
+/**
+ * 제목이 줄바꿈되지 않도록, 자기 행(li) 폭에 맞춰 폰트 크기를 줄인다.
+ * 긴 제목(예: "대학교, 기업 교육 및 행사 디자인")은 모바일 폭에서
+ * CSS clamp의 최소값으로도 한 줄에 안 들어가 줄바꿈됐었다.
+ * 실제로 필요한 만큼만 줄이므로 짧은 제목은 원래 크기 그대로 유지된다.
+ */
+function useFitTitle(text: string) {
+  const ref = useRef<HTMLSpanElement>(null)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const fit = () => {
+      const row = el.closest('li')
+      if (!row) return
+      el.style.fontSize = '' // CSS clamp 기준값으로 리셋 후 다시 측정 (화면이 넓어지면 원래 크기로 복귀)
+      const available = row.clientWidth
+      const needed = el.scrollWidth
+      if (needed > available && available > 0) {
+        const current = parseFloat(getComputedStyle(el).fontSize)
+        el.style.fontSize = `${Math.floor(current * (available / needed) * 0.98)}px`
+      }
+    }
+
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [text])
+
+  return ref
+}
+
 function Row({
   href,
   title,
@@ -160,6 +199,7 @@ function Row({
   onFocus: () => void
 }) {
   const t = { duration: DUR, ease: EASE }
+  const titleRef = useFitTitle(title)
   return (
     <Link
       href={href}
@@ -168,6 +208,7 @@ function Row({
       className="flex flex-wrap items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] gap-y-1 outline-none"
     >
       <motion.span
+        ref={titleRef}
         animate={{ color: activeState ? INK : MUTED }}
         transition={t}
         className="index-title"
