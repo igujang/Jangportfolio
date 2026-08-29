@@ -68,19 +68,25 @@ body {
   font-weight: 500; /* Medium — SemiBold가 너무 두꺼워 보여 사용자가 변경 */
   line-height: 1;
   letter-spacing: -0.05em;
-  white-space: nowrap; /* 줄바꿈 대신 폭에 맞춰 폰트 크기를 줄인다 (WorkIndex.tsx useFitTitle) */
+  white-space: nowrap; /* 줄바꿈 대신 폭에 맞춰 폰트 크기를 줄인다 (WorkIndex.tsx useFitRow) */
 }
 
 .index-chip {
+  display: inline-block; /* scrollWidth 측정용 */
   font-size: clamp(0.75rem, 0.73vw, 0.875rem); /* 14px @1920 */
   font-weight: 400; /* Regular — 사용자 확정 */
   letter-spacing: normal;
-  padding: clamp(0.4rem, 0.42vw, 0.5rem) clamp(0.7rem, 0.83vw, 1rem); /* 8px 16px @1920 */
+  white-space: nowrap;
+  /* em 단위 — 폰트 크기가 줄어들면 여백도 같은 비율로 줄어든다.
+     8px/16px ÷ 14px 기준 비율 */
+  padding: 0.57em 1.14em;
 }
 
 .index-num {
+  display: inline-block;
   font-size: clamp(0.75rem, 0.73vw, 0.875rem);
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .index-row-gap {

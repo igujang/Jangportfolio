@@ -78,12 +78,12 @@ export default function WorkIndex({ works }: { works: Work[] }) {
       {/* 하단 여백:
           - 모바일(터치) — 기준선을 65%로 내린 덕분에 예전 50vh보다
             훨씬 적은 여유만 있어도 마지막 항목이 선택된다.
-          - 데스크탑(호버) — 우측 하단 썸네일에 가리지 않을 정도만 남긴다.
-            (무한 루프 대신 유한한 목록으로 가되, 끝난 뒤 여백만
-            덩그러니 남지 않게 한다) */}
+          - 데스크탑(호버) — 썸네일은 화면 우측에 떠 있고 제목 텍스트는
+            그 폭까지 닿지 않으므로 여백을 따로 둘 필요가 없다.
+            main의 기본 상하 패딩만으로 충분하다. */}
       <ul
         className="index-row-gap flex flex-col"
-        style={{ paddingBottom: isTouch ? '35vh' : 'clamp(200px, 24vw, 460px)' }}
+        style={{ paddingBottom: isTouch ? '35vh' : undefined }}
       >
         {/* ── 이름 (프로젝트와 같은 크기, 맨 위) ── */}
         <li
@@ -149,34 +149,43 @@ export default function WorkIndex({ works }: { works: Work[] }) {
 }
 
 /**
- * 제목이 줄바꿈되지 않도록, 자기 행(li) 폭에 맞춰 폰트 크기를 줄인다.
- * 긴 제목(예: "대학교, 기업 교육 및 행사 디자인")은 모바일 폭에서
- * CSS clamp의 최소값으로도 한 줄에 안 들어가 줄바꿈됐었다.
+ * 제목 · 카테고리 버튼 · 번호가 한 줄에 다 들어가도록, 셋을 같은 비율로
+ * 줄인다. 제목만 줄이면 버튼·번호가 자리가 없어 아래로 밀려났다 —
+ * 셋을 하나의 세트로 보고 행(li) 폭에 맞춰 함께 축소한다.
  * 실제로 필요한 만큼만 줄이므로 짧은 제목은 원래 크기 그대로 유지된다.
  */
-function useFitTitle(text: string) {
-  const ref = useRef<HTMLSpanElement>(null)
+function useFitRow() {
+  const ref = useRef<HTMLAnchorElement>(null)
 
   useLayoutEffect(() => {
-    const el = ref.current
-    if (!el) return
+    const link = ref.current
+    if (!link) return
+    const title = link.querySelector<HTMLElement>('.index-title')
+    const chip = link.querySelector<HTMLElement>('.index-chip')
+    const num = link.querySelector<HTMLElement>('.index-num')
+    if (!title || !chip || !num) return
+    const parts = [title, chip, num]
 
     const fit = () => {
-      const row = el.closest('li')
+      const row = link.closest('li')
       if (!row) return
-      el.style.fontSize = '' // CSS clamp 기준값으로 리셋 후 다시 측정 (화면이 넓어지면 원래 크기로 복귀)
+      // CSS clamp 기준값으로 리셋 후 다시 측정 (화면이 넓어지면 원래 크기로 복귀)
+      for (const el of parts) el.style.fontSize = ''
       const available = row.clientWidth
-      const needed = el.scrollWidth
+      const needed = link.scrollWidth
       if (needed > available && available > 0) {
-        const current = parseFloat(getComputedStyle(el).fontSize)
-        el.style.fontSize = `${Math.floor(current * (available / needed) * 0.98)}px`
+        const scale = (available / needed) * 0.98
+        for (const el of parts) {
+          const current = parseFloat(getComputedStyle(el).fontSize)
+          el.style.fontSize = `${Math.floor(current * scale)}px`
+        }
       }
     }
 
     fit()
     window.addEventListener('resize', fit)
     return () => window.removeEventListener('resize', fit)
-  }, [text])
+  }, [])
 
   return ref
 }
@@ -199,16 +208,16 @@ function Row({
   onFocus: () => void
 }) {
   const t = { duration: DUR, ease: EASE }
-  const titleRef = useFitTitle(title)
+  const rowRef = useFitRow()
   return (
     <Link
+      ref={rowRef}
       href={href}
       onMouseEnter={onHover}
       onFocus={onFocus}
-      className="flex flex-wrap items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] gap-y-1 outline-none"
+      className="flex items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] outline-none"
     >
       <motion.span
-        ref={titleRef}
         animate={{ color: activeState ? INK : MUTED }}
         transition={t}
         className="index-title"
