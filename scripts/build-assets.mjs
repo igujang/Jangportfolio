@@ -89,7 +89,16 @@ async function convertImage(src, dest) {
           withoutEnlargement: true,
         })
       : img
-  await pipeline.jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true }).toFile(dest)
+  // 투명한 원본(PNG)은 반드시 흰색으로 깔고 내려야 한다.
+  // JPEG은 알파를 못 담는데, sharp의 기본 합성 색은 검정이다.
+  // 그대로 두면 투명 영역이 까맣게 변하고(지중서원 SIGN DESIGN),
+  // 가장자리의 반투명 한 줄은 회색 선으로 남는다
+  // (실측: alpha 128 한 줄 → rgb(141,139,140) 가로줄).
+  // 알파가 없는 이미지엔 flatten이 아무 영향을 주지 않는다.
+  await pipeline
+    .flatten({ background: '#ffffff' })
+    .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .toFile(dest)
   const out = await sharp(dest).metadata()
   return { w: out.width, h: out.height }
 }
@@ -145,12 +154,14 @@ async function buildProfile() {
   if (thumbSrc) {
     await sharp(thumbSrc, { limitInputPixels: false })
       .resize(800, 800, { fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+      .flatten({ background: '#ffffff' })
       .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
       .toFile(path.join(dir, 'profile.jpg'))
   }
   if (avatarSrc) {
     await sharp(avatarSrc, { limitInputPixels: false })
       .resize(160, 160, { fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+      .flatten({ background: '#ffffff' })
       .jpeg({ quality: 92, chromaSubsampling: '4:4:4', mozjpeg: true })
       .toFile(path.join(dir, 'avatar.jpg'))
   }

@@ -68,8 +68,10 @@ export default function WorkBlocks({ work }: { work: Work }) {
       </div>
 
       {work.award && (
-        <div className="flex justify-center px-6 py-10">
-          <span className="rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[0.85rem] font-semibold tracking-tight text-[#3d3d3d]">
+        <div className="flex justify-center px-6 py-12">
+          {/* 노트폴리오 브랜드 색(청록)을 그대로 쓴다 — 회색 알약은
+              수상 내역이 맞달리지 않았다. 글자도 한 단계 키웠다. */}
+          <span className="rounded-full bg-[#2BC7CE] px-8 py-4 text-[1.05rem] font-bold tracking-tight text-white shadow-[0_8px_24px_-8px_rgba(43,199,206,0.6)]">
             {work.award}
           </span>
         </div>

@@ -405,14 +405,14 @@
       {
         "type": "image",
         "src": "/works/1853/03.jpg",
-        "w": 1920,
-        "h": 1080
+        "w": 1659,
+        "h": 2800
       },
       {
         "type": "image",
         "src": "/works/1853/04.jpg",
-        "w": 1659,
-        "h": 2800
+        "w": 1920,
+        "h": 1080
       },
       {
         "type": "image",
@@ -423,12 +423,6 @@
       {
         "type": "image",
         "src": "/works/1853/06.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/1853/07.jpg",
         "w": 1920,
         "h": 1080
       }
@@ -790,12 +784,6 @@
       {
         "type": "image",
         "src": "/works/cheonghae/05.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/cheonghae/06.jpg",
         "w": 1920,
         "h": 1080
       }
