@@ -2,19 +2,13 @@ import puppeteer from 'puppeteer-core'
 import { mkdir } from 'node:fs/promises'
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
-const BASE = 'http://localhost:4323'
+const BASE = process.env.BASE || 'http://localhost:3000'
 const OUT = process.argv[2] || './shots'
 
 const VIEWS = [
   { name: 'desktop', width: 1920, height: 1080, dsf: 1 },
   { name: 'tablet', width: 834, height: 1112, dsf: 1 },
   { name: 'mobile', width: 390, height: 844, dsf: 2 },
-]
-
-const PAGES = [
-  { name: 'main', path: '/' },
-  { name: 'detail', path: '/works/chamisul' },
-  { name: 'about', path: '/about' },
 ]
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -28,34 +22,36 @@ const browser = await puppeteer.launch({
 await mkdir(OUT, { recursive: true })
 
 for (const v of VIEWS) {
-  for (const p of PAGES) {
-    const page = await browser.newPage()
-    await page.setViewport({
-      width: v.width,
-      height: v.height,
-      deviceScaleFactor: v.dsf,
-      hasTouch: v.name !== 'desktop',
-      isMobile: v.name === 'mobile',
-    })
-    await page.goto(BASE + p.path, { waitUntil: 'networkidle2', timeout: 60000 })
-    await wait(1800) // 폰트 + 썸네일 영상 첫 프레임 대기
+  const page = await browser.newPage()
+  await page.setViewport({
+    width: v.width,
+    height: v.height,
+    deviceScaleFactor: v.dsf,
+    hasTouch: v.name !== 'desktop',
+    isMobile: v.name === 'mobile',
+  })
 
-    // 메인 데스크탑에서는 3번째 항목에 호버한 상태도 함께 담는다
-    if (p.name === 'main' && v.name === 'desktop') {
-      await page.screenshot({ path: `${OUT}/${v.name}-${p.name}.png` })
-      const links = await page.$$('ul li a')
-      if (links[2]) {
-        await links[2].hover()
-        await wait(900)
-        await page.screenshot({ path: `${OUT}/${v.name}-main-hover.png` })
-      }
-    } else {
-      await page.screenshot({ path: `${OUT}/${v.name}-${p.name}.png` })
-    }
-    console.log(`  ${v.name.padEnd(8)} ${p.path}`)
-    await page.close()
+  // 1) 인덱스
+  await page.goto(BASE, { waitUntil: 'networkidle2', timeout: 60000 })
+  await page.evaluate(() => document.fonts.ready)
+  await wait(1500)
+  await page.screenshot({ path: `${OUT}/${v.name}-index.png` })
+
+  // 2) 인덱스에서 프로젝트 클릭 → 모달
+  const links = await page.$$('ul li a')
+  const target = links[3] // 03 Place_NE (썸네일 영상 있음)
+  if (target) {
+    if (v.name === 'desktop') await target.hover()
+    await target.click()
+    await wait(2200)
+    await page.screenshot({ path: `${OUT}/${v.name}-modal.png` })
+    await page.evaluate(() => window.scrollTo(0, 900))
+    await wait(1200)
+    await page.screenshot({ path: `${OUT}/${v.name}-modal-scroll.png` })
   }
+  console.log(`  ${v.name} 완료`)
+  await page.close()
 }
 
 await browser.close()
-console.log('\n스크린샷 완료 →', OUT)
+console.log('\n스크린샷 →', OUT)

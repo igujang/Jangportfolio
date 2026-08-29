@@ -1,16 +1,46 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css');
 @import 'tailwindcss';
 
+/* ── Pretendard (로컬) ─────────────────────────────
+   Font/ 폴더의 원본 otf를 woff2로 변환해 넣었다 (14MB → 2.3MB).
+   변환: npm run fonts
+──────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
-    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Malgun Gothic', sans-serif;
 
   /* 배경은 흰색 고정 */
   --color-page: #ffffff;
   --color-ink: #0a0a0a;
   --color-muted: #c4c4c4;
-  --color-chip: #eeeeee;
-  --color-chip-ink: #6b6b6b;
 }
 
 html,
@@ -26,13 +56,45 @@ body {
   overflow-x: hidden;
 }
 
-/* 목록에서는 스크롤바를 숨겨 화면을 깨끗하게 유지 */
+/* ── 인덱스 타이포 스케일 ──────────────────────────
+   참고 사이트(skiper24)의 비율에 맞춘다.
+   가로폭과 화면높이 중 작은 쪽을 따라가므로 12개 항목이
+   어떤 화면에서도 한 화면에 들어온다.
+──────────────────────────────────────────────────── */
+.index-title {
+  font-size: clamp(1.12rem, min(2.95vw, 4.85vh), 3.6rem);
+  font-weight: 600; /* SemiBold */
+  line-height: 1.14;
+  letter-spacing: -0.022em;
+}
+
+.index-chip {
+  font-size: clamp(0.5rem, min(0.72vw, 1.3vh), 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+
+.index-num {
+  font-size: clamp(0.56rem, min(0.8vw, 1.45vh), 1rem);
+  font-weight: 500;
+}
+
+.index-row-gap {
+  gap: clamp(0.45rem, min(0.95vw, 1.5vh), 1.25rem);
+}
+
+/* 스크롤바 숨김 */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* 모달이 열려 있는 동안 뒤 페이지 스크롤 잠금 */
+body.modal-open {
+  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {

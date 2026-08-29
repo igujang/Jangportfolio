@@ -5,7 +5,13 @@
     "slug": "chamisul",
     "title": "참이슬 오리지날 I BX Renewal (개인프로젝트)",
     "category": "SOJU",
-    "thumb": null,
+    "gap": 0,
+    "thumb": {
+      "type": "video",
+      "src": "/works/chamisul/thumb.mp4",
+      "w": 800,
+      "h": 800
+    },
     "blocks": [
       {
         "type": "vimeo",
@@ -199,6 +205,7 @@
     "slug": "locl",
     "title": "locl I BX Renewal",
     "category": "APP",
+    "gap": 0,
     "thumb": {
       "type": "video",
       "src": "/works/locl/thumb.mp4",
@@ -216,37 +223,37 @@
         "type": "image",
         "src": "/works/locl/02.jpg",
         "w": 1920,
-        "h": 2200
+        "h": 1092
       },
       {
         "type": "image",
         "src": "/works/locl/03.jpg",
-        "w": 1919,
-        "h": 1012
+        "w": 1920,
+        "h": 2120
       },
       {
         "type": "image",
         "src": "/works/locl/04.jpg",
         "w": 1920,
-        "h": 1574
+        "h": 1936
       },
       {
         "type": "image",
         "src": "/works/locl/05.jpg",
-        "w": 1817,
-        "h": 2800
+        "w": 1920,
+        "h": 1986
       },
       {
         "type": "image",
         "src": "/works/locl/06.jpg",
         "w": 1920,
-        "h": 2142
+        "h": 1734
       },
       {
         "type": "image",
         "src": "/works/locl/07.jpg",
-        "w": 1721,
-        "h": 2800
+        "w": 1920,
+        "h": 2627
       },
       {
         "type": "image",
@@ -258,31 +265,31 @@
         "type": "image",
         "src": "/works/locl/09.jpg",
         "w": 1920,
-        "h": 2317
+        "h": 1237
       },
       {
         "type": "image",
         "src": "/works/locl/10.jpg",
-        "w": 1811,
-        "h": 2800
+        "w": 1920,
+        "h": 1080
       },
       {
         "type": "image",
         "src": "/works/locl/11.jpg",
-        "w": 1920,
-        "h": 2243
+        "w": 1854,
+        "h": 2800
       },
       {
         "type": "image",
         "src": "/works/locl/12.jpg",
         "w": 1920,
-        "h": 2507
+        "h": 2312
       },
       {
         "type": "image",
         "src": "/works/locl/13.jpg",
         "w": 1920,
-        "h": 1080
+        "h": 2507
       },
       {
         "type": "image",
@@ -300,13 +307,13 @@
         "type": "image",
         "src": "/works/locl/16.jpg",
         "w": 1920,
-        "h": 1070
+        "h": 1080
       },
       {
         "type": "image",
         "src": "/works/locl/17.jpg",
         "w": 1920,
-        "h": 2226
+        "h": 2216
       }
     ]
   },
@@ -316,6 +323,7 @@
     "slug": "place-ne",
     "title": "Place_NE I BX Design",
     "category": "CAFE",
+    "gap": 60,
     "thumb": {
       "type": "video",
       "src": "/works/place-ne/thumb.mp4",
@@ -373,6 +381,7 @@
     "slug": "1853",
     "title": "1853 I BX Design",
     "category": "BIKE SHOP",
+    "gap": 60,
     "thumb": {
       "type": "image",
       "src": "/works/1853/thumb.jpg",
@@ -430,6 +439,7 @@
     "slug": "dorrr",
     "title": "Dorrr I BX Design",
     "category": "GOLFWEAR",
+    "gap": 60,
     "thumb": {
       "type": "image",
       "src": "/works/dorrr/thumb.jpg",
@@ -499,7 +509,13 @@
     "slug": "jijung",
     "title": "지중서원 I BX Design",
     "category": "HOTEL",
-    "thumb": null,
+    "gap": 60,
+    "thumb": {
+      "type": "image",
+      "src": "/works/jijung/thumb.jpg",
+      "w": 760,
+      "h": 760
+    },
     "blocks": [
       {
         "type": "vimeo",
@@ -552,6 +568,7 @@
     "slug": "solsol",
     "title": "솔솔바람다님길 I BX Design",
     "category": "TRAIL",
+    "gap": 60,
     "thumb": {
       "type": "video",
       "src": "/works/solsol/thumb.mp4",
@@ -621,6 +638,7 @@
     "slug": "ssamsulin",
     "title": "쌤슐랭 I BX Design",
     "category": "EDUCATION",
+    "gap": 60,
     "thumb": {
       "type": "video",
       "src": "/works/ssamsulin/thumb.mp4",
@@ -684,7 +702,13 @@
     "slug": "panpan",
     "title": "판판서양주점 I BX Design",
     "category": "PUB",
-    "thumb": null,
+    "gap": 60,
+    "thumb": {
+      "type": "image",
+      "src": "/works/panpan/thumb.jpg",
+      "w": 1920,
+      "h": 1080
+    },
     "blocks": [
       {
         "type": "image",
@@ -730,7 +754,13 @@
     "slug": "cheonghae",
     "title": "청해주조 I BX Design",
     "category": "BREWERY",
-    "thumb": null,
+    "gap": 60,
+    "thumb": {
+      "type": "image",
+      "src": "/works/cheonghae/thumb.jpg",
+      "w": 1920,
+      "h": 1080
+    },
     "blocks": [
       {
         "type": "image",
@@ -761,6 +791,12 @@
         "src": "/works/cheonghae/05.jpg",
         "w": 1920,
         "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/cheonghae/06.jpg",
+        "w": 1920,
+        "h": 1080
       }
     ]
   },
@@ -770,7 +806,13 @@
     "slug": "web-roadmap",
     "title": "웹개발자로드맵 I Book Cover Design",
     "category": "BOOK",
-    "thumb": null,
+    "gap": 60,
+    "thumb": {
+      "type": "image",
+      "src": "/works/web-roadmap/thumb.jpg",
+      "w": 1920,
+      "h": 1080
+    },
     "blocks": [
       {
         "type": "image",
@@ -804,296 +846,9 @@
     "slug": "event-design",
     "title": "대학교, 기업 교육 및 행사 디자인",
     "category": "EVENT",
+    "gap": 60,
+    "blank": true,
     "thumb": null,
-    "blocks": [
-      {
-        "type": "image",
-        "src": "/works/event-design/01.jpg",
-        "w": 2800,
-        "h": 406
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/02.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/03.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/04.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/05.jpg",
-        "w": 1982,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/06.jpg",
-        "w": 1983,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/07.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/08.jpg",
-        "w": 1417,
-        "h": 198
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/09.jpg",
-        "w": 900,
-        "h": 2699
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/10.jpg",
-        "w": 2800,
-        "h": 1575
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/11.jpg",
-        "w": 2800,
-        "h": 1575
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/12.jpg",
-        "w": 1134,
-        "h": 255
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/13.jpg",
-        "w": 1403,
-        "h": 198
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/14.jpg",
-        "w": 1417,
-        "h": 227
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/15.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/16.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/17.jpg",
-        "w": 2800,
-        "h": 560
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/18.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/19.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/20.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/21.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/22.jpg",
-        "w": 2800,
-        "h": 1576
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/23.jpg",
-        "w": 2800,
-        "h": 1576
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/24.jpg",
-        "w": 2100,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/25.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/26.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/27.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/28.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/29.jpg",
-        "w": 1982,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/30.jpg",
-        "w": 1982,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/31.jpg",
-        "w": 500,
-        "h": 501
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/32.jpg",
-        "w": 842,
-        "h": 1191
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/33.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/34.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/35.jpg",
-        "w": 2800,
-        "h": 1595
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/36.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/37.jpg",
-        "w": 2304,
-        "h": 512
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/38.jpg",
-        "w": 2425,
-        "h": 2560
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/39.jpg",
-        "w": 2800,
-        "h": 622
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/40.jpg",
-        "w": 1651,
-        "h": 881
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/41.jpg",
-        "w": 1920,
-        "h": 1080
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/42.jpg",
-        "w": 1417,
-        "h": 255
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/43.jpg",
-        "w": 934,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/44.jpg",
-        "w": 2800,
-        "h": 1380
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/45.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/46.jpg",
-        "w": 1980,
-        "h": 2800
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/47.jpg",
-        "w": 2800,
-        "h": 1575
-      },
-      {
-        "type": "image",
-        "src": "/works/event-design/48.jpg",
-        "w": 2800,
-        "h": 2100
-      }
-    ]
+    "blocks": []
   }
 ]

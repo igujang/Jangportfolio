@@ -21,29 +21,44 @@ const JPEG_Q = 90 // 일반 웹 기본(75~80)보다 높게
 
 /** "순서와 카테고리 분류.txt" 기준 */
 const PROJECTS = [
-  { n: '01', dir: '01 참이슬 오리지날 I BX Renewal (개인프로젝트)', slug: 'chamisul', title: '참이슬 오리지날 I BX Renewal (개인프로젝트)', category: 'SOJU' },
-  { n: '02', dir: '02 locl l BX Renewal', slug: 'locl', title: 'locl I BX Renewal', category: 'APP' },
-  { n: '03', dir: '03 Place_NE l BX Design', slug: 'place-ne', title: 'Place_NE I BX Design', category: 'CAFE' },
-  { n: '04', dir: '04 1853 I BX Design', slug: '1853', title: '1853 I BX Design', category: 'BIKE SHOP' },
-  { n: '05', dir: '05 Dorrr l BX Design', slug: 'dorrr', title: 'Dorrr I BX Design', category: 'GOLFWEAR' },
-  { n: '06', dir: '06 지중서원 l BX Design', slug: 'jijung', title: '지중서원 I BX Design', category: 'HOTEL' },
-  { n: '07', dir: '07 솔솔바람다님길 l BX Design', slug: 'solsol', title: '솔솔바람다님길 I BX Design', category: 'TRAIL' },
-  { n: '08', dir: '08 쌤슐랭 I BX Design', slug: 'ssamsulin', title: '쌤슐랭 I BX Design', category: 'EDUCATION' },
-  { n: '09', dir: '09 판판서양주점 I BX Design', slug: 'panpan', title: '판판서양주점 I BX Design', category: 'PUB' },
-  { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY' },
-  { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK' },
-  { n: '12', dir: '00 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT' },
+  { n: '01', dir: '01 참이슬 오리지날 I BX Renewal (개인프로젝트)', slug: 'chamisul', title: '참이슬 오리지날 I BX Renewal (개인프로젝트)', category: 'SOJU', gap: 0 },
+  { n: '02', dir: '02 locl l BX Renewal', slug: 'locl', title: 'locl I BX Renewal', category: 'APP', gap: 0 },
+  { n: '03', dir: '03 Place_NE l BX Design', slug: 'place-ne', title: 'Place_NE I BX Design', category: 'CAFE', gap: 60 },
+  { n: '04', dir: '04 1853 I BX Design', slug: '1853', title: '1853 I BX Design', category: 'BIKE SHOP', gap: 60 },
+  { n: '05', dir: '05 Dorrr l BX Design', slug: 'dorrr', title: 'Dorrr I BX Design', category: 'GOLFWEAR', gap: 60 },
+  { n: '06', dir: '06 지중서원 l BX Design', slug: 'jijung', title: '지중서원 I BX Design', category: 'HOTEL', gap: 60 },
+  { n: '07', dir: '07 솔솔바람다님길 l BX Design', slug: 'solsol', title: '솔솔바람다님길 I BX Design', category: 'TRAIL', gap: 60 },
+  { n: '08', dir: '08 쌤슐랭 I BX Design', slug: 'ssamsulin', title: '쌤슐랭 I BX Design', category: 'EDUCATION', gap: 60 },
+  { n: '09', dir: '09 판판서양주점 I BX Design', slug: 'panpan', title: '판판서양주점 I BX Design', category: 'PUB', gap: 60 },
+  { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY', gap: 60 },
+  { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK', gap: 60 },
+  { n: '12', dir: '00 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 60, blank: true },
 ]
 
 const isImage = (f) => /\.(jpe?g|png|webp)$/i.test(f)
-const isGif = (f) => /\.gif$/i.test(f)
+/** GIF와 동영상은 모두 mp4 루프로 통일한다 */
+const isGif = (f) => /\.(gif|mp4|mov|webm|m4v)$/i.test(f)
 const isTxt = (f) => /\.txt$/i.test(f)
 const isThumb = (f) => /thum/i.test(f)
 
-/** 파일명 끝의 숫자로 정렬 (1.jpg, 2.jpg, 10.jpg → 올바른 순서) */
+/**
+ * 파일명 안의 숫자들을 순서대로 뽑아 비교한다.
+ *   1.jpg → [1]   ·   4-1.jpg → [4,1]   ·   10.jpg → [10]
+ * 덕분에 4 → 4-1 → 4-2 → 5 순서가 유지된다.
+ */
 function orderKey(f) {
-  const m = path.basename(f, path.extname(f)).match(/(\d+)\s*$/)
-  return m ? parseInt(m[1], 10) : Number.MAX_SAFE_INTEGER
+  const nums = path.basename(f, path.extname(f)).match(/\d+/g)
+  return nums ? nums.map(Number) : [Number.MAX_SAFE_INTEGER]
+}
+
+function compareByNumber(a, b) {
+  const ka = orderKey(a)
+  const kb = orderKey(b)
+  for (let i = 0; i < Math.max(ka.length, kb.length); i++) {
+    const d = (ka[i] ?? -1) - (kb[i] ?? -1)
+    if (d) return d
+  }
+  return a.localeCompare(b, 'ko')
 }
 
 /** 비메오 iframe 파싱 */
@@ -79,7 +94,7 @@ async function convertImage(src, dest) {
   return { w: out.width, h: out.height }
 }
 
-/** GIF → mp4 루프 영상 */
+/** GIF·동영상 → mp4 루프 영상 (화질↑ 용량↓) */
 async function convertGif(src, dest) {
   await run(
     'ffmpeg',
@@ -89,6 +104,28 @@ async function convertGif(src, dest) {
   const { stdout } = await run('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height', '-of', 'csv=p=0', dest])
   const [w, h] = stdout.trim().split(',').map(Number)
   return { w, h }
+}
+
+/** 프로필 사진 → 정사각형 2종 (아바타용 작은 것, 썸네일용 큰 것) */
+async function buildProfile() {
+  const src = path.join(ROOT, 'Jand dong ho profile', '프로필사진.png')
+  try {
+    await stat(src)
+  } catch {
+    console.log('  프로필 사진 없음 — 건너뜀')
+    return null
+  }
+  const dir = path.join(ROOT, 'public')
+  await sharp(src, { limitInputPixels: false })
+    .resize(800, 800, { fit: 'cover', position: 'top', kernel: 'lanczos3' })
+    .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .toFile(path.join(dir, 'profile.jpg'))
+  await sharp(src, { limitInputPixels: false })
+    .resize(160, 160, { fit: 'cover', position: 'top', kernel: 'lanczos3' })
+    .jpeg({ quality: 92, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .toFile(path.join(dir, 'avatar.jpg'))
+  console.log('  프로필 사진 → /profile.jpg (800px) · /avatar.jpg (160px)')
+  return true
 }
 
 const mb = (n) => (n / 1048576).toFixed(1)
@@ -111,11 +148,7 @@ async function main() {
     const bodyFiles = files.filter((f) => f !== thumbFile && (isImage(f) || isGif(f) || isTxt(f)))
 
     // 12번 폴더는 파일명에 순번이 없으므로 이름순, 나머지는 숫자순
-    bodyFiles.sort(
-      p.slug === 'event-design'
-        ? (a, b) => a.localeCompare(b, 'ko')
-        : (a, b) => orderKey(a) - orderKey(b) || a.localeCompare(b, 'ko')
-    )
+    bodyFiles.sort(compareByNumber)
 
     // ── 썸네일 ──
     let thumb = null
@@ -135,10 +168,10 @@ async function main() {
       }
     }
 
-    // ── 본문 ──
+    // ── 본문 ── (blank 프로젝트는 목록에만 남기고 내용은 비운다)
     const blocks = []
     let i = 0
-    for (const f of bodyFiles) {
+    for (const f of p.blank ? [] : bodyFiles) {
       const s = path.join(srcDir, f)
       if (isTxt(f)) {
         const v = await parseVimeo(s)
@@ -164,6 +197,8 @@ async function main() {
     const v = blocks.filter((b) => b.type === 'vimeo').length
     console.log(`  ${p.n} ${p.slug.padEnd(13)} 블록 ${String(blocks.length).padStart(2)}개 (비메오 ${v}) ${thumb ? '썸네일 ' + thumb.type : '썸네일 없음'}`)
   }
+
+  await buildProfile()
 
   await mkdir(path.join(ROOT, 'content'), { recursive: true })
   await writeFile(path.join(ROOT, 'content', 'works.json'), JSON.stringify(manifest, null, 2))

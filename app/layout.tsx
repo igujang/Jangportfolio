@@ -17,10 +17,20 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+  modal,
+}: {
+  children: React.ReactNode
+  /** 목록에서 프로젝트를 클릭했을 때 위에 뜨는 창 */
+  modal: React.ReactNode
+}) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        {children}
+        {modal}
+      </body>
     </html>
   )
 }
