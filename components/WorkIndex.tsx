@@ -14,9 +14,9 @@ const INK = '#0a0a0a'
 const MUTED = '#c4c4c4'
 const EASE = [0.22, 1, 0.36, 1] as const
 const DUR = 0.28
-// 탭 → 제목이 검정으로 물들고 썸네일이 떠오를 만큼만 기다렸다가 이동한다.
-// 더 늘리면 연출은 살지만 반복해서 훑어볼 때 답답해진다.
-const TAP_DELAY = 260
+// 탭 → 제목이 검정으로 물들고 썸네일이 떠올라 한 박자 머무를 시간.
+// 260ms로 해 봤더니 썸네일이 떴는지도 모를 만큼 빨리 지나갔다.
+const TAP_DELAY = 620
 
 export default function WorkIndex({ works }: { works: Work[] }) {
   const router = useRouter()
@@ -123,7 +123,7 @@ export default function WorkIndex({ works }: { works: Work[] }) {
             initial={{ opacity: 0, scale: 0.88 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.96 }}
-            transition={{ duration: 0.2, ease: EASE }}
+            transition={{ duration: 0.28, ease: EASE }}
             className="pointer-events-none fixed bottom-[24px] right-[24px] z-10 xl:hidden"
           >
             <ThumbCard work={workAt(pressed)} className="w-[min(60vw,360px)]" />
@@ -160,7 +160,7 @@ function Row({
       onMouseEnter={onHover}
       onFocus={onFocus}
       onClick={onClick}
-      className="flex flex-wrap items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] gap-y-1 outline-none"
+      className="flex flex-wrap items-center gap-x-[clamp(0.3rem,1.1vw,1.6rem)] gap-y-1 outline-none"
     >
       <motion.span
         animate={{ color: activeState ? INK : MUTED }}

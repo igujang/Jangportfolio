@@ -56,64 +56,59 @@ body {
   overflow-x: hidden;
 }
 
-/* ── 인덱스 타이포 스케일 ──────────────────────────
+/* ── 인덱스 타이포 스케일 ──────────────────
    참고 사이트(skiper24)를 직접 열어 getComputedStyle로 실측한 값이다.
    (scripts/measure-ref.mjs) 1920px 기준 — 제목 72px · 행 간격 40px ·
-   칩 14px/Regular, 여백 8px 16px, 제목과 세로 중앙 정렬.
-   한 화면에 욱여넣지 않고 자연스럽게 스크롤되게 둔다.
-──────────────────────────────────────────────────── */
+   칩 14px/Regular. 한 화면에 욱엯넣지 않고 자연스럽게 스크롤되게 둔다.
+──────────────────────────────────────────────── */
+:root {
+  /* 제목 크기. 칩과 번호가 이 값을 기준으로 세로 위치를 잡으므로
+     인라인에 박지 않고 변수로 빼둔다. */
+  --index-title: clamp(1.05rem, 3.75vw, 4.5rem); /* 72px @1920 */
+}
+
 .index-title {
   display: inline-block;
-  font-size: clamp(1.05rem, 3.75vw, 4.5rem); /* 72px @1920. 모든 행이 같은 clamp를 쓰므로
-    화면 폭이 같으면 프로젝트와 무관하게 항상 같은 크기 — 위계가 깨지지 않는다. */
+  font-size: var(--index-title); /* 모든 행이 같은 값을 쓰므로 화면 폭이 같으면
+    프로젝트와 무관하게 항상 같은 크기 — 위계가 깨지지 않는다. */
   font-weight: 500; /* Medium — SemiBold가 너무 두꺼워 보여 사용자가 변경 */
   line-height: 1;
   letter-spacing: -0.05em;
   white-space: nowrap;
 }
 
-.index-chip {
-  display: inline-block;
-  font-size: clamp(0.75rem, 0.73vw, 0.875rem); /* 14px @1920 */
-  font-weight: 400; /* Regular — 사용자 확정 */
-  letter-spacing: normal;
-  white-space: nowrap;
-  /* em 단위 — 폰트 크기가 줄어들면 여백도 같은 비율로 줄어든다.
-     8px/16px ÷ 14px 기준 비율 */
-  padding: 0.57em 1.14em;
-}
+/* 카테고리 알약 · 번호 ─────────────────────────
+   글자 크기를 기준으로 삼고 여백을 em으로 붙인다. 그러면 알약이
+   커지든 작아지든 "글자 : 알약 = 58%" 비율이 전 화면에서 같다.
+     line-height: 1  → 브라우저 기본 줄높이가 알약을 부풀리는 것 방지
+     padding 0.362em → (1/0.58 - 1)/2. 글자+여백 합이 글자의 1.724배
 
+   예전엔 1280px에서 규칙이 갈려, 폭을 줄이면 알약은 31.7→24px로
+   작아지는데 안의 글자는 12→20.7px로 오히려 커지는 역전이 있었다.
+   경계를 없애고 하나로 합쳤다. */
+.index-chip,
 .index-num {
   display: inline-block;
-  font-size: clamp(0.75rem, 0.73vw, 0.875rem);
-  font-weight: 400;
+  font-size: clamp(0.5rem, 0.73vw, 0.875rem); /* 8px … 14px @1920 */
+  font-weight: 400; /* Regular — 사용자 확정 */
+  line-height: 1;
+  letter-spacing: normal;
   white-space: nowrap;
+  /* 제목을 대문자(cap height) 기준으로 정중앙에 놓으면, g·( 처럼
+     아래로 뾻는 획이 있는 제목에서 알약이 떠 보인다. 제목 글자
+     덩어리의 실제 중심(박스의 0.57 지점)에 가깝게 내려 준다. */
+  transform: translateY(calc(var(--index-title) * 0.04));
+}
+
+.index-chip {
+  /* 가로 여백은 참고 사이트 비율(8px/16px = 1:2)보다 조금 좀다.
+     알약을 키우고 나니 390px에서 가장 긴 행(참이슬)이 가로에
+     7.5px 모자라 번호가 다음 줄로 밀렸다. */
+  padding: 0.362em 0.65em;
 }
 
 .index-row-gap {
   gap: clamp(1.25rem, 2.08vw, 2.5rem); /* 40px @1920 */
-}
-
-/* 태블릿 · 모바일(<1280px) — 버튼(카테고리 알약·번호) "자체"가
-   제목 높이의 절반이 되도록 한다.
-   ⚠️ 텍스트 폰트 크기만 절반으로 줄이면 안 된다 — 알약 배경의 여백
-   (padding)이 그대로 있으면 알약 전체 크기는 거의 안 줄어든다
-   (실측: 텍스트 50%로 줄여도 알약 높이는 오히려 제목과 비슷해짐).
-   그래서 여백을 최소로 줄이고, "폰트 + 여백"의 합이 정확히 제목의
-   절반이 되도록 폰트 크기를 역산했다.
-     line-height: 1  → 브라우저 기본 줄높이가 알약을 부풀리는 것 방지
-     padding: 0.08em → 알약 모양은 유지하되 거의 텍스트에 붙을 만큼만
-     font-size = 0.5×title ÷ (1 + 2×0.08) ≈ 0.431×title
-       예) 제목 16.8px → 알약 전체 높이 8.4px(=제목의 50%), 글자 7.2px */
-@media (max-width: 1279px) {
-  .index-chip,
-  .index-num {
-    line-height: 1;
-    font-size: clamp(0.453rem, 1.616vw, 1.94rem);
-  }
-  .index-chip {
-    padding: 0.08em 0.5em;
-  }
 }
 
 /* 스크롤바 숨김 */
