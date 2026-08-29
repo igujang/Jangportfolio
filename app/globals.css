@@ -57,30 +57,32 @@ body {
 }
 
 /* ── 인덱스 타이포 스케일 ──────────────────────────
-   참고 사이트(skiper24)의 비율에 맞춘다.
-   가로폭과 화면높이 중 작은 쪽을 따라가므로 12개 항목이
-   어떤 화면에서도 한 화면에 들어온다.
+   참고 사이트(skiper24)를 직접 열어 getComputedStyle로 실측한 값이다.
+   (scripts/measure-ref.mjs) 1920px 기준 — 제목 72px · 행 간격 40px ·
+   칩 14px/Regular, 여백 8px 16px, 제목과 세로 중앙 정렬.
+   한 화면에 욱여넣지 않고 자연스럽게 스크롤되게 둔다.
 ──────────────────────────────────────────────────── */
 .index-title {
-  font-size: clamp(1.12rem, min(2.95vw, 4.85vh), 3.6rem);
-  font-weight: 600; /* SemiBold */
-  line-height: 1.14;
-  letter-spacing: -0.022em;
+  font-size: clamp(1.5rem, 3.75vw, 4.5rem); /* 72px @1920 */
+  font-weight: 600; /* SemiBold — 참고 사이트는 Regular지만 사용자가 지정 */
+  line-height: 1;
+  letter-spacing: -0.05em;
 }
 
 .index-chip {
-  font-size: clamp(0.5rem, min(0.72vw, 1.3vh), 0.9rem);
-  font-weight: 600;
-  letter-spacing: 0.09em;
+  font-size: clamp(0.75rem, 0.73vw, 0.875rem); /* 14px @1920 */
+  font-weight: 400; /* Regular — 사용자 확정 */
+  letter-spacing: normal;
+  padding: clamp(0.4rem, 0.42vw, 0.5rem) clamp(0.7rem, 0.83vw, 1rem); /* 8px 16px @1920 */
 }
 
 .index-num {
-  font-size: clamp(0.56rem, min(0.8vw, 1.45vh), 1rem);
-  font-weight: 500;
+  font-size: clamp(0.75rem, 0.73vw, 0.875rem);
+  font-weight: 400;
 }
 
 .index-row-gap {
-  gap: clamp(0.45rem, min(0.95vw, 1.5vh), 1.25rem);
+  gap: clamp(1.25rem, 2.08vw, 2.5rem); /* 40px @1920 */
 }
 
 /* 스크롤바 숨김 */

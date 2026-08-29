@@ -71,7 +71,7 @@ export default function WorkIndex({ works }: { works: Work[] }) {
 
   return (
     <main className="relative min-h-[100svh] px-[5vw] py-[5vh] md:px-[4vw] xl:px-[3.2vw] xl:py-[4vh]">
-      <ul className="index-row-gap flex flex-col pb-[42vh] md:pb-[30vh] xl:pb-0">
+      <ul className="index-row-gap flex flex-col pb-[50vh]">
         {/* ── 이름 (프로젝트와 같은 크기, 맨 위) ── */}
         <li
           ref={(el) => {
@@ -111,15 +111,17 @@ export default function WorkIndex({ works }: { works: Work[] }) {
       </ul>
 
       {/* ── 썸네일 (우측 하단 고정, 1:1) ── */}
-      <div className="pointer-events-none fixed bottom-[4vh] right-[5vw] z-10 xl:bottom-[3.4vw] xl:right-[3.4vw]">
-        <div className="relative aspect-square w-[148px] overflow-hidden rounded-[16px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05] sm:w-[200px] md:w-[280px] md:rounded-[24px] xl:w-[clamp(300px,21.5vw,420px)] xl:rounded-[clamp(24px,1.8vw,34px)]">
-          <AnimatePresence mode="wait">
+      <div className="pointer-events-none fixed bottom-[4vh] right-[5vw] z-10 xl:bottom-[2.08vw] xl:right-[2.08vw]">
+        <div className="relative aspect-square w-[148px] overflow-hidden rounded-[16px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05] sm:w-[200px] md:w-[280px] md:rounded-[24px] xl:w-[clamp(280px,20.83vw,400px)] xl:rounded-[24px]">
+          {/* mode="wait" 제거 — 이전 것이 사라진 뒤에 다음 것이 뜨면 교체가
+              느려 보인다. 겹쳐서 동시에 크로스페이드되게 한다. */}
+          <AnimatePresence>
             <motion.div
               key={current?.slug ?? 'profile'}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.32, ease: EASE }}
+              transition={{ duration: 0.2, ease: EASE }}
               className="absolute inset-0"
             >
               <ThumbBody work={current} />
@@ -154,7 +156,7 @@ function Row({
       href={href}
       onMouseEnter={onHover}
       onFocus={onFocus}
-      className="flex flex-wrap items-baseline gap-x-[clamp(0.55rem,1.1vw,1.6rem)] gap-y-1 outline-none"
+      className="flex flex-wrap items-center gap-x-[clamp(0.55rem,1.1vw,1.6rem)] gap-y-1 outline-none"
     >
       <motion.span
         animate={{ color: activeState ? INK : MUTED }}
@@ -170,7 +172,7 @@ function Row({
           color: activeState ? '#3d3d3d' : '#bdbdbd',
         }}
         transition={t}
-        className="index-chip shrink-0 rounded-full px-[0.75em] py-[0.35em]"
+        className="index-chip shrink-0 rounded-full"
       >
         {category}
       </motion.span>

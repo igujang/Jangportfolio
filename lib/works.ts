@@ -17,6 +17,8 @@ export type Work = {
   gap: number
   /** 목록에는 남기되 내용은 비워둔 프로젝트 */
   blank?: boolean
+  /** 수상·선정 표기 (있으면 본문 맨 아래에 뱃지로 노출) */
+  award?: string
   thumb: Thumb
   blocks: Block[]
 }

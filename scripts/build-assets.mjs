@@ -23,7 +23,7 @@ const JPEG_Q = 90 // 일반 웹 기본(75~80)보다 높게
 const PROJECTS = [
   { n: '01', dir: '01 참이슬 오리지날 I BX Renewal (개인프로젝트)', slug: 'chamisul', title: '참이슬 오리지날 I BX Renewal (개인프로젝트)', category: 'SOJU', gap: 0 },
   { n: '02', dir: '02 locl l BX Renewal', slug: 'locl', title: 'locl I BX Renewal', category: 'APP', gap: 0 },
-  { n: '03', dir: '03 Place_NE l BX Design', slug: 'place-ne', title: 'Place_NE I BX Design', category: 'CAFE', gap: 60 },
+  { n: '03', dir: '03 Place_NE l BX Design', slug: 'place-ne', title: 'Place_NE I BX Design', category: 'CAFE', gap: 60, award: '노트폴리오 PICK 선정' },
   { n: '04', dir: '04 1853 I BX Design', slug: '1853', title: '1853 I BX Design', category: 'BIKE SHOP', gap: 60 },
   { n: '05', dir: '05 Dorrr l BX Design', slug: 'dorrr', title: 'Dorrr I BX Design', category: 'GOLFWEAR', gap: 60 },
   { n: '06', dir: '06 지중서원 l BX Design', slug: 'jijung', title: '지중서원 I BX Design', category: 'HOTEL', gap: 60 },
@@ -106,25 +106,55 @@ async function convertGif(src, dest) {
   return { w, h }
 }
 
-/** 프로필 사진 → 정사각형 2종 (아바타용 작은 것, 썸네일용 큰 것) */
+/** 지정한 후보 경로 중 실제로 존재하는 첫 파일을 찾는다 */
+async function firstExisting(paths) {
+  for (const p of paths) {
+    try {
+      await stat(p)
+      return p
+    } catch {
+      // 다음 후보로
+    }
+  }
+  return null
+}
+
+/**
+ * 프로필 사진 → 정사각형 2종.
+ *  - profile.jpg (800px) : 이름 행 호버 시 나오는 썸네일  ← Thum_Profile.jpg
+ *  - avatar.jpg  (160px) : 모달 상단의 동그란 프로필      ← Circle_Thum.jpg
+ * 새 파일이 없으면 예전 프로필사진.png로 대체한다.
+ */
 async function buildProfile() {
-  const src = path.join(ROOT, 'Jand dong ho profile', '프로필사진.png')
-  try {
-    await stat(src)
-  } catch {
+  const base = path.join(ROOT, 'Jand dong ho profile')
+  const fallback = path.join(base, '프로필사진.png')
+
+  const thumbSrc = await firstExisting([path.join(base, 'Thum_Profile.jpg'), fallback])
+  const avatarSrc = await firstExisting([
+    path.join(base, 'Circle_Thum.jpg'),
+    path.join(base, 'Thum_Profile.jpg'),
+    fallback,
+  ])
+
+  if (!thumbSrc && !avatarSrc) {
     console.log('  프로필 사진 없음 — 건너뜀')
     return null
   }
+
   const dir = path.join(ROOT, 'public')
-  await sharp(src, { limitInputPixels: false })
-    .resize(800, 800, { fit: 'cover', position: 'top', kernel: 'lanczos3' })
-    .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
-    .toFile(path.join(dir, 'profile.jpg'))
-  await sharp(src, { limitInputPixels: false })
-    .resize(160, 160, { fit: 'cover', position: 'top', kernel: 'lanczos3' })
-    .jpeg({ quality: 92, chromaSubsampling: '4:4:4', mozjpeg: true })
-    .toFile(path.join(dir, 'avatar.jpg'))
-  console.log('  프로필 사진 → /profile.jpg (800px) · /avatar.jpg (160px)')
+  if (thumbSrc) {
+    await sharp(thumbSrc, { limitInputPixels: false })
+      .resize(800, 800, { fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+      .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
+      .toFile(path.join(dir, 'profile.jpg'))
+  }
+  if (avatarSrc) {
+    await sharp(avatarSrc, { limitInputPixels: false })
+      .resize(160, 160, { fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+      .jpeg({ quality: 92, chromaSubsampling: '4:4:4', mozjpeg: true })
+      .toFile(path.join(dir, 'avatar.jpg'))
+  }
+  console.log(`  프로필 사진 → /profile.jpg (${path.basename(thumbSrc ?? '')}) · /avatar.jpg (${path.basename(avatarSrc ?? '')})`)
   return true
 }
 

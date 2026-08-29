@@ -56,17 +56,19 @@ export default function ProjectModal({
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className="fixed inset-0 z-50 bg-black/45 backdrop-blur-[3px]"
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-[3px]"
     >
-      {/* 스크롤 영역 — 배경(빈 곳)을 누르면 닫힌다 */}
+      {/* 스크롤 영역 — 배경(빈 곳)을 누르면 닫힌다.
+          커서를 zoom-out으로 바꿔 "여기를 누르면 닫힌다"는 걸 알려준다
+          (비핸스의 돋보기− 커서와 같은 역할). 패널 위에서는 기본 커서로 되돌린다. */}
       <div
         ref={scrollRef}
         onClick={(e) => {
           if (e.target === e.currentTarget) close()
         }}
-        className="no-scrollbar h-full w-full overflow-y-auto overscroll-contain"
+        className="no-scrollbar h-full w-full cursor-zoom-out overflow-y-auto overscroll-contain"
       >
-        <div className="mx-auto w-full max-w-[1400px] bg-white md:my-0">
+        <div className="mx-auto w-full max-w-[1400px] cursor-auto bg-white md:my-0">
           {/* ── 헤더 ── */}
           <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-black/[0.06] bg-white/95 px-5 py-4 backdrop-blur-md md:px-8 md:py-5">
             <div className="min-w-0">

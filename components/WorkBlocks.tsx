@@ -18,40 +18,62 @@ export default function WorkBlocks({ work }: { work: Work }) {
     )
   }
 
+  const isZeroGap = work.gap === 0
+
   return (
-    <div className="flex flex-col" style={{ gap: `${work.gap}px` }}>
-      {work.blocks.map((b, i) => {
-        if (b.type === 'vimeo') {
-          return <VimeoBlock key={`${b.id}-${i}`} id={b.id} loop={b.loop} w={b.w} h={b.h} />
-        }
-        if (b.type === 'video') {
+    <>
+      <div className="flex flex-col" style={{ gap: isZeroGap ? 0 : `${work.gap}px` }}>
+        {work.blocks.map((b, i) => {
+          const isLast = i === work.blocks.length - 1
+          // 간격 0px 프로젝트에서 이미지 사이에 보이던 미세한 회색 선은
+          // 서브픽셀 반올림으로 생기는 틈이다. 1px씩 겹쳐 덮어 없앤다.
+          const seamFix = isZeroGap && !isLast ? { marginBottom: -1 } : undefined
+
+          let content: React.ReactNode
+          if (b.type === 'vimeo') {
+            content = <VimeoBlock id={b.id} loop={b.loop} w={b.w} h={b.h} />
+          } else if (b.type === 'video') {
+            content = (
+              <video
+                src={b.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="block w-full"
+                style={{ aspectRatio: `${b.w} / ${b.h}` }}
+              />
+            )
+          } else {
+            content = (
+              <Image
+                src={b.src}
+                alt={`${work.title} ${i + 1}`}
+                width={b.w}
+                height={b.h}
+                sizes="(max-width: 1400px) 100vw, 1400px"
+                priority={i < 2}
+                className="block h-auto w-full"
+              />
+            )
+          }
+
           return (
-            <video
-              key={b.src}
-              src={b.src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="block w-full"
-              style={{ aspectRatio: `${b.w} / ${b.h}` }}
-            />
+            <div key={`${b.type}-${i}`} style={seamFix} className="relative">
+              {content}
+            </div>
           )
-        }
-        return (
-          <Image
-            key={b.src}
-            src={b.src}
-            alt={`${work.title} ${i + 1}`}
-            width={b.w}
-            height={b.h}
-            sizes="(max-width: 1400px) 100vw, 1400px"
-            priority={i < 2}
-            className="block h-auto w-full"
-          />
-        )
-      })}
-    </div>
+        })}
+      </div>
+
+      {work.award && (
+        <div className="flex justify-center px-6 py-10">
+          <span className="rounded-full bg-[#f5f5f5] px-5 py-2.5 text-[0.85rem] font-semibold tracking-tight text-[#3d3d3d]">
+            {work.award}
+          </span>
+        </div>
+      )}
+    </>
   )
 }
