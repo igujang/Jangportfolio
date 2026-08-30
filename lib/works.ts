@@ -20,11 +20,30 @@ export type Work = {
   blank?: boolean
   /** 수상·선정 표기 (있으면 본문 맨 아래에 뱃지로 노출) */
   award?: string
+  /** 세로로 쌓지 않고 인스타그램 피드처럼 격자로 깐다 */
+  grid?: boolean
   thumb: Thumb
   blocks: Block[]
 }
 
 export const works = data as Work[]
+
+/**
+ * 목록에 필요한 것만 추린 요약본.
+ *
+ * 인덱스는 제목·카테고리·썸네일만 쓰는데, works 를 통째로 넘기면 상세
+ * 이미지 목록까지 전부 클라이언트로 실려 간다. 로고 아카이브 한 프로젝트만
+ * 680장이라 그대로 두면 인덱스가 눈에 띄게 무거워진다.
+ */
+export type WorkSummary = Pick<Work, 'n' | 'slug' | 'title' | 'category' | 'thumb'>
+
+export const workSummaries: WorkSummary[] = works.map(({ n, slug, title, category, thumb }) => ({
+  n,
+  slug,
+  title,
+  category,
+  thumb,
+}))
 
 export const OWNER = '장동호'
 

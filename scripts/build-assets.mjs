@@ -9,6 +9,7 @@
  *  - gap        : 상세 페이지에서 이미지 사이 세로 간격(px)
  *  - award      : 수상·선정 표기
  *  - blank      : 목록에만 남기고 내용은 비움
+ *  - grid       : 세로로 쌓지 않고 인스타그램 피드처럼 격자로 깐다
  *  - skipFirst  : 첫 장(표지)을 본문에서 뺀다. 원본은 그대로 두고 여기서만
  *                 걸러내므로, 되돌리려면 이 줄만 지우면 된다.
  */
@@ -62,6 +63,7 @@ const PROJECTS = [
   { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK', gap: 60 },
   { n: '12', dir: '12 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 0 },
   { n: '13', dir: '13. 주요 기업 · 공공기관 협업', slug: 'clients', title: '주요 기업 · 공공기관 협업', category: 'CLIENTS', gap: 0 },
+  { n: '14', dir: '14 로고 디자인 작업 아카이브', slug: 'logo-archive', title: '로고 디자인 작업 아카이브', category: 'LOGO', gap: 0, grid: true },
 ]
 
 const isImage = (f) => /\.(jpe?g|png|webp)$/i.test(f)

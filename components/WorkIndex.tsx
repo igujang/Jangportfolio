@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PROFILE_SRC, type Work } from '@/lib/works'
+import { PROFILE_SRC, type WorkSummary } from '@/lib/works'
 
 const NAME = '장동호 디자이너'
 const NAME_ROW = -1 // 이름 행. 프로젝트는 0..n-1
@@ -18,7 +18,7 @@ const DUR = 0.28
 // 260ms로 해 봤더니 썸네일이 떴는지도 모를 만큼 빨리 지나갔다.
 const TAP_DELAY = 620
 
-export default function WorkIndex({ works }: { works: Work[] }) {
+export default function WorkIndex({ works }: { works: WorkSummary[] }) {
   const router = useRouter()
   const pathname = usePathname()
   const [active, setActive] = useState(0)
@@ -192,7 +192,7 @@ function Row({
 }
 
 /** 둥근 흰 상자 안에 썸네일 하나. 데스크탑·터치가 같은 모양을 쓴다. */
-function ThumbCard({ work, className }: { work: Work | null; className: string }) {
+function ThumbCard({ work, className }: { work: WorkSummary | null; className: string }) {
   return (
     <div
       className={`relative aspect-square overflow-hidden rounded-[24px] bg-white shadow-[0_18px_60px_-18px_rgba(0,0,0,0.28)] ring-1 ring-black/[0.05] ${className}`}
@@ -215,7 +215,7 @@ function ThumbCard({ work, className }: { work: Work | null; className: string }
   )
 }
 
-function ThumbBody({ work }: { work: Work | null }) {
+function ThumbBody({ work }: { work: WorkSummary | null }) {
   // 이름 행 — 프로필 사진
   if (!work) {
     return (

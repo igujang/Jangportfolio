@@ -8,6 +8,52 @@ import type { Work } from '@/lib/works'
  * 헤더까지 더하면 화면에 안 들어왔다. 1200px 이면 675px 이 되어 한 장이 온전히 보인다.
  * 세로로 이어지도록 만든 프로젝트는 간격 0, 나머지는 60px.
  */
+/**
+ * 인스타그램 피드식 격자.
+ *
+ * 로고 아카이브(680장)처럼 낱장을 죽 훑어보는 자료용이다. 원본이 전부
+ * 정사각이라 1:1 타일로 깔면 잘리는 부분 없이 그대로 보인다.
+ *
+ * 칸 수는 화면이 아니라 패널 폭을 따라간다. 패널이 min(화면, 1200px) 이므로
+ * 1200px 부터 4칸, 그 아래는 3칸. 모바일 3칸은 인스타그램 앱과 같다.
+ *
+ * 첫 두 줄만 먼저 받고 나머지는 스크롤하면서 받는다(기본 지연 로딩).
+ */
+function FeedGrid({ work }: { work: Work }) {
+  return (
+    <div className="grid grid-cols-3 gap-[4px] min-[1200px]:grid-cols-4">
+      {work.blocks.map((b, i) =>
+        b.type === 'vimeo' ? null : (
+          <div key={`${b.type}-${i}`} className="relative aspect-square overflow-hidden bg-[#f4f4f4]">
+            {b.type === 'video' ? (
+              <video
+                src={b.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="none"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={b.src}
+                alt={`${work.title} ${i + 1}`}
+                fill
+                sizes="(min-width: 1200px) 300px, 33vw"
+                priority={i < 8}
+                /* 본문과 같은 이유로 재인코딩하지 않는다 (WorkBlocks 아래 주석 참고) */
+                unoptimized
+                className="object-cover"
+              />
+            )}
+          </div>
+        )
+      )}
+    </div>
+  )
+}
+
 export default function WorkBlocks({ work }: { work: Work }) {
   if (!work.blocks.length) {
     return (
@@ -24,6 +70,8 @@ export default function WorkBlocks({ work }: { work: Work }) {
 
   return (
     <>
+      {work.grid ? <FeedGrid work={work} /> : null}
+      {work.grid ? null : (
       <div className="flex flex-col" style={{ gap: isZeroGap ? 0 : `${work.gap}px` }}>
         {work.blocks.map((b, i) => {
           const isLast = i === work.blocks.length - 1
@@ -75,6 +123,7 @@ export default function WorkBlocks({ work }: { work: Work }) {
           )
         })}
       </div>
+      )}
 
       {work.award && (
         <div className="flex justify-center px-6 py-12">
