@@ -53,7 +53,7 @@ export default function ScrollTopButton({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 8 }}
           transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className={`fixed z-20 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white ${className}`}
+          className={`fixed z-20 grid h-12 w-12 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white ${className}`}
         >
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
             <path

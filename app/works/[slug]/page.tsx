@@ -66,15 +66,15 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
         <Link
           href="/"
           aria-label="닫기"
-          className="fixed right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:right-5 md:top-5"
+          className="fixed right-4 top-4 z-20 grid h-12 w-12 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:top-5"
         >
-          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 md:h-6 md:w-6" aria-hidden>
+          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </Link>
 
         {/* 맨 위로 — 여기서는 창이 스크롤되므로 scrollerRef 없이 쓴다 */}
-        <ScrollTopButton className="bottom-6 right-4 md:bottom-8 md:right-5" />
+        <ScrollTopButton className="bottom-6 right-4 md:bottom-8" />
 
         <WorkBlocks work={work} />
 

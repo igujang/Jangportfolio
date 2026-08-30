@@ -157,14 +157,17 @@ export default function ProjectModal({
           type="button"
           onClick={close}
           aria-label="닫기"
-          className="fixed right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:right-5 md:top-5"
+          className="fixed right-4 top-4 z-20 grid h-12 w-12 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:top-5"
         >
-          <XIcon className="h-5 w-5 md:h-6 md:w-6" />
+          <XIcon className="h-5 w-5" />
         </button>
 
         {/* ── 맨 위로 ──
-            데스크탑은 우측 하단에 '다음'이 있어 그 위로 올린다. */}
-        <ScrollTopButton scrollerRef={scrollRef} className="bottom-6 right-4 md:bottom-32 md:right-5" />
+            데스크탑은 우측 하단에 '다음'이 있어 그 바로 위에 쌓는다.
+            '다음' 원의 윗면이 바닥에서 102px(bottom-8 + 라벨 높이 70px)이라
+            114px 에 두면 두 원 사이가 12px 로 벌어진다. 지름과 좌우 축은
+            '다음'과 똑같이 48px · right-4 로 맞춰 세로 한 줄에 정렬된다. */}
+        <ScrollTopButton scrollerRef={scrollRef} className="bottom-6 right-4 md:bottom-[114px]" />
 
         {/* ── 데스크탑 전용: 좌우 하단 이전/다음 ── */}
         {prev && <SideNav dir="prev" slug={prev.slug} label="이전" />}
