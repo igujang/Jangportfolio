@@ -64,4 +64,4 @@
 - 모바일 : 010 5014 6243
 - 이메일 : sjsjfl0101@naver.com
 
-[Instagram](https://www.instagram.com/logo_igu) [Behance](https://www.behance.net/donghojang)
+[Behance](https://www.behance.net/donghojang) [Instagram](https://www.instagram.com/logo_igu)

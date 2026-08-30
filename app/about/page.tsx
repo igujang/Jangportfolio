@@ -94,7 +94,10 @@ export default async function AboutPage() {
         DESIGNER
       </p>
 
-      <div className="mt-[7vh] max-w-[720px] pb-[10vh]">
+      {/* break-keep — 한글은 기본값(normal)이면 글자 단위로 끊겨
+          '달성했습니 / 다', '브랜드 접 / 점' 처럼 어절이 잘린다.
+          keep-all 이면 띄어쓰기 기준으로만 넘어간다. */}
+      <div className="mt-[7vh] max-w-[720px] pb-[10vh] break-keep">
         {nodes.map((n, i) => {
           switch (n.t) {
             case 'h2':
@@ -126,7 +129,7 @@ export default async function AboutPage() {
               )
             case 'links':
               return (
-                <div key={i} className="mt-7 flex flex-wrap gap-x-8 gap-y-3">
+                <div key={i} className="mt-8 flex items-center justify-between gap-4">
                   {n.items.map((l) => (
                     <a
                       key={l.href}
