@@ -864,5 +864,27 @@
         "h": 2800
       }
     ]
+  },
+  {
+    "n": "13",
+    "dir": "13. 주요 기업 · 공공기관 협업",
+    "slug": "clients",
+    "title": "주요 기업 · 공공기관 협업",
+    "category": "CLIENTS",
+    "gap": 0,
+    "thumb": {
+      "type": "image",
+      "src": "/works/clients/thumb.711a147f.jpg",
+      "w": 425,
+      "h": 425
+    },
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/clients/01.16bac9b9.jpg",
+        "w": 1684,
+        "h": 1190
+      }
+    ]
   }
 ]
