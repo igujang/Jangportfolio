@@ -11,7 +11,7 @@ const EASE = [0.22, 1, 0.36, 1] as const
 /**
  * 비핸스식 프로젝트 창.
  *
- *  데스크탑 — 어두운 배경 위에 1400px 흰 패널.
+ *  데스크탑 — 어두운 배경 위에 1200px 흰 패널.
  *             닫기 X는 화면 우측 상단(패널 밖), 이전/다음은 좌우 하단 원형 버튼.
  *  모바일   — 전체화면. 흰 헤더에 제목·프로필·닫기 버튼.
  *
@@ -85,9 +85,12 @@ export default function ProjectModal({
           }}
           className="no-scrollbar h-full w-full cursor-zoom-out overflow-y-auto overscroll-contain"
         >
-          <div className="mx-auto w-full max-w-[1400px] cursor-auto bg-white md:my-0">
-            {/* ── 헤더 ── */}
-            <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-black/[0.06] bg-white/95 px-5 py-4 backdrop-blur-md md:px-8 md:py-5">
+          <div className="mx-auto w-full max-w-[1200px] cursor-auto bg-white md:my-0">
+            {/* ── 헤더 ──
+                sticky 를 뺐다. 휠을 내리면 작업물에 자리를 내주고 위로
+                끝까지 올라오면 다시 나타난다. 닫기 버튼은 헤더 안에 두면
+                같이 사라지므로 화면 고정으로 따로 뺐다. */}
+            <header className="flex items-center justify-between gap-4 border-b border-black/[0.06] bg-white px-5 py-4 md:px-8 md:py-5">
               <div className="min-w-0">
                 <h1 className="truncate text-[1.15rem] font-bold tracking-tight text-[#0a0a0a] md:text-[1.45rem]">
                   {title}
@@ -105,16 +108,6 @@ export default function ProjectModal({
                   </span>
                 </div>
               </div>
-
-              {/* 모바일 닫기 — 회색 원형 (데스크탑에서는 화면 우측 상단으로 나감) */}
-              <button
-                type="button"
-                onClick={close}
-                aria-label="닫기"
-                className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#f0f0f0] text-[#2b2b2b] transition-colors hover:bg-[#e2e2e2] md:hidden"
-              >
-                <XIcon className="h-5 w-5" />
-              </button>
             </header>
 
             {/* ── 작업물 ── */}
@@ -156,14 +149,15 @@ export default function ProjectModal({
           </div>
         </div>
 
-        {/* ── 데스크탑 전용: 화면 우측 상단 닫기 ── */}
+        {/* ── 닫기 — 화면 우측 상단 고정 ──
+            헤더가 스크롤에 밀려 사라져도 항상 닿을 수 있어야 한다. */}
         <button
           type="button"
           onClick={close}
           aria-label="닫기"
-          className="fixed right-5 top-5 z-20 hidden h-11 w-11 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg transition-colors hover:bg-white md:grid"
+          className="fixed right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:right-5 md:top-5"
         >
-          <XIcon className="h-6 w-6" />
+          <XIcon className="h-5 w-5 md:h-6 md:w-6" />
         </button>
 
         {/* ── 데스크탑 전용: 좌우 하단 이전/다음 ── */}

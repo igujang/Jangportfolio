@@ -3,7 +3,9 @@ import VimeoBlock from '@/components/VimeoBlock'
 import type { Work } from '@/lib/works'
 
 /**
- * 상세 내용 — 비핸스 규격(최대 1400px 폭)으로 세로 나열.
+ * 상세 내용 — 1200px 폭으로 세로 나열.
+ * 1400px 이던 것을 줄였다 — 노트북(뷰포트 약 900px)에서 16:9 한 장이 787px 이라
+ * 헤더까지 더하면 화면에 안 들어왔다. 1200px 이면 675px 이 되어 한 장이 온전히 보인다.
  * 세로로 이어지도록 만든 프로젝트는 간격 0, 나머지는 60px.
  */
 export default function WorkBlocks({ work }: { work: Work }) {
@@ -52,7 +54,7 @@ export default function WorkBlocks({ work }: { work: Work }) {
                 alt={`${work.title} ${i + 1}`}
                 width={b.w}
                 height={b.h}
-                sizes="(max-width: 1400px) 100vw, 1400px"
+                sizes="(max-width: 1200px) 100vw, 1200px"
                 priority={i < 2}
                 className="block h-auto w-full"
               />

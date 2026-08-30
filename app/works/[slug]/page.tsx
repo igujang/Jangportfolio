@@ -37,8 +37,10 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
 
   return (
     <main className="min-h-[100svh]">
-      <div className="mx-auto w-full max-w-[1400px]">
-        <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-black/[0.06] bg-white/95 px-5 py-4 backdrop-blur-md md:px-8 md:py-5">
+      <div className="mx-auto w-full max-w-[1200px]">
+        {/* 모달과 같은 동작 — sticky 를 빼서 휠을 내리면 사라지고
+            맨 위로 올라오면 다시 나타난다. 닫기는 아래 화면 고정. */}
+        <header className="flex items-center justify-between gap-4 border-b border-black/[0.06] bg-white px-5 py-4 md:px-8 md:py-5">
           <div className="min-w-0">
             <h1 className="truncate text-[1.15rem] font-bold tracking-tight text-[#0a0a0a] md:text-[1.45rem]">
               {work.title}
@@ -57,16 +59,18 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             </div>
           </div>
 
-          <Link
-            href="/"
-            aria-label="닫기"
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#f0f0f0] text-[#2b2b2b] transition-colors hover:bg-[#e2e2e2]"
-          >
-            <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </Link>
         </header>
+
+        {/* 닫기 — 화면 우측 상단 고정 (헤더가 사라져도 남는다) */}
+        <Link
+          href="/"
+          aria-label="닫기"
+          className="fixed right-4 top-4 z-20 grid h-11 w-11 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:right-5 md:top-5"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 md:h-6 md:w-6" aria-hidden>
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </Link>
 
         <WorkBlocks work={work} />
 
