@@ -884,6 +884,12 @@
         "src": "/works/clients/01.9464582d.jpg",
         "w": 1684,
         "h": 1190
+      },
+      {
+        "type": "image",
+        "src": "/works/clients/02.3109c16e.jpg",
+        "w": 2000,
+        "h": 1423
       }
     ]
   }
