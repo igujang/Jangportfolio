@@ -39,14 +39,14 @@ const PROJECTS = [
   { n: '09', dir: '09 판판서양주점 I BX Design', slug: 'panpan', title: '판판서양주점 I BX Design', category: 'PUB', gap: 60 },
   { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY', gap: 60, skipFirst: true },
   { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK', gap: 60 },
-  { n: '12', dir: '00 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 60, blank: true },
+  { n: '12', dir: '12 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 60 },
 ]
 
 const isImage = (f) => /\.(jpe?g|png|webp)$/i.test(f)
 /** GIF와 동영상은 모두 mp4 루프로 통일한다 */
 const isGif = (f) => /\.(gif|mp4|mov|webm|m4v)$/i.test(f)
 const isTxt = (f) => /\.txt$/i.test(f)
-const isThumb = (f) => /thum/i.test(f)
+const isThumb = (f) => /thum/i.test(f) && (isImage(f) || isGif(f))
 
 /**
  * 파일명 안의 숫자들을 순서대로 뽑아 비교한다.

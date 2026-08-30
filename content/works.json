@@ -632,8 +632,8 @@
     "thumb": {
       "type": "video",
       "src": "/works/ssamsulin/thumb.mp4",
-      "w": 1920,
-      "h": 1080
+      "w": 1422,
+      "h": 1422
     },
     "blocks": [
       {
@@ -696,8 +696,8 @@
     "thumb": {
       "type": "image",
       "src": "/works/panpan/thumb.jpg",
-      "w": 1920,
-      "h": 1080
+      "w": 800,
+      "h": 800
     },
     "blocks": [
       {
@@ -821,13 +821,48 @@
   },
   {
     "n": "12",
-    "dir": "00 대학교, 기업 교육 및 행사 디자인",
+    "dir": "12 대학교, 기업 교육 및 행사 디자인",
     "slug": "event-design",
     "title": "대학교, 기업 교육 및 행사 디자인",
     "category": "EVENT",
     "gap": 60,
-    "blank": true,
-    "thumb": null,
-    "blocks": []
+    "thumb": {
+      "type": "image",
+      "src": "/works/event-design/thumb.jpg",
+      "w": 800,
+      "h": 800
+    },
+    "blocks": [
+      {
+        "type": "image",
+        "src": "/works/event-design/01.jpg",
+        "w": 1159,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/02.jpg",
+        "w": 1384,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/03.jpg",
+        "w": 1920,
+        "h": 2007
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/04.jpg",
+        "w": 1238,
+        "h": 2800
+      },
+      {
+        "type": "image",
+        "src": "/works/event-design/05.jpg",
+        "w": 1223,
+        "h": 2800
+      }
+    ]
   }
 ]
