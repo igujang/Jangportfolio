@@ -129,7 +129,7 @@ export default async function AboutPage() {
               )
             case 'links':
               return (
-                <div key={i} className="mt-8 flex items-center justify-between gap-4">
+                <div key={i} className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
                   {n.items.map((l) => (
                     <a
                       key={l.href}
