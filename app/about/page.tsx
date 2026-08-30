@@ -15,8 +15,15 @@ export const metadata: Metadata = {
 type Node =
   | { t: 'h2'; s: string }
   | { t: 'h3'; s: string }
+  /** 소제목 바로 아래 한 줄 — 재직 기간, 발급 기관 같은 부가 정보 */
+  | { t: 'meta'; s: string }
   | { t: 'p'; s: string }
   | { t: 'ul'; items: string[] }
+  | { t: 'links'; items: { label: string; href: string }[] }
+
+const LINK = /\[([^\]]+)\]\(([^)]+)\)/g
+/** 링크만으로 이루어진 줄 — 나란히 놓는 바로 그린다 */
+const ONLY_LINKS = /^(?:\[[^\]]+\]\([^)]+\)\s*)+$/
 
 function parse(md: string): Node[] {
   const out: Node[] = []
@@ -40,6 +47,14 @@ function parse(md: string): Node[] {
     flush()
     if (line.startsWith('### ')) out.push({ t: 'h3', s: line.slice(4) })
     else if (line.startsWith('## ')) out.push({ t: 'h2', s: line.slice(3) })
+    else if (ONLY_LINKS.test(line))
+      out.push({
+        t: 'links',
+        items: [...line.matchAll(LINK)].map((m) => ({ label: m[1], href: m[2] })),
+      })
+    // 소제목 다음 첫 줄은 기간·기관 같은 부가 정보다
+    // (2025.01 — 2026.06 / 졸업 / 한국산업인력공단)
+    else if (out.at(-1)?.t === 'h3') out.push({ t: 'meta', s: line })
     else out.push({ t: 'p', s: line })
   }
   flush()
@@ -76,7 +91,7 @@ export default async function AboutPage() {
         장동호 디자이너
       </h1>
       <p className="mt-2 text-[clamp(0.75rem,1vw,0.95rem)] font-medium tracking-[0.06em] text-[#b4b4b4]">
-        BX DESIGNER
+        DESIGNER
       </p>
 
       <div className="mt-[7vh] max-w-[720px] pb-[10vh]">
@@ -99,6 +114,31 @@ export default async function AboutPage() {
                 >
                   {n.s}
                 </h3>
+              )
+            case 'meta':
+              return (
+                <p
+                  key={i}
+                  className="mt-1.5 text-[clamp(0.75rem,0.92vw,0.88rem)] font-medium tabular-nums tracking-[0.02em] text-[#b4b4b4]"
+                >
+                  {n.s}
+                </p>
+              )
+            case 'links':
+              return (
+                <div key={i} className="mt-7 flex flex-wrap gap-x-8 gap-y-3">
+                  {n.items.map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="text-[clamp(0.95rem,1.25vw,1.2rem)] font-bold tracking-tight text-[#0a0a0a] underline decoration-[#d6d6d6] decoration-2 underline-offset-[7px] transition-colors hover:decoration-[#0a0a0a]"
+                    >
+                      {l.label}
+                    </a>
+                  ))}
+                </div>
               )
             case 'ul':
               return (
