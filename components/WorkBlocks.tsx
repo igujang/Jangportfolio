@@ -72,7 +72,10 @@ export default function WorkBlocks({ work }: { work: Work }) {
     <>
       {work.grid ? <FeedGrid work={work} /> : null}
       {work.grid ? null : (
-      <div className="flex flex-col" style={{ gap: isZeroGap ? 0 : `${work.gap}px` }}>
+      <div
+        className="work-stack flex flex-col"
+        style={{ '--work-gap': isZeroGap ? '0px' : `${work.gap}px` } as React.CSSProperties}
+      >
         {work.blocks.map((b, i) => {
           const isLast = i === work.blocks.length - 1
           // 간격 0px 프로젝트에서 이미지 사이에 보이던 미세한 회색 선은

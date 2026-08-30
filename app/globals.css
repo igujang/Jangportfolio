@@ -124,6 +124,29 @@ body {
   gap: clamp(1.25rem, 2.08vw, 2.5rem); /* 40px @1920 */
 }
 
+/* ── 상세 이미지 사이 간격 ────────────────────────
+   프로젝트마다 정한 간격(--work-gap)을 그대로 쓰되, 화면이 좁아지면
+   같은 비율로 줄인다. 60px 을 어느 화면에서나 그대로 두면 폭이 좁을수록
+   여백만 커 보인다. 간격 0 인 프로젝트는 나눠도 0 이라 그대로다.
+
+     1200px 이상(패널이 최대 폭)  60px
+     768 ~ 1199px (태블릿)        30px
+     767px 이하 (모바일)          15px
+──────────────────────────────────────────────────── */
+.work-stack {
+  gap: var(--work-gap, 0px);
+}
+@media (max-width: 1199px) {
+  .work-stack {
+    gap: calc(var(--work-gap, 0px) / 2);
+  }
+}
+@media (max-width: 767px) {
+  .work-stack {
+    gap: calc(var(--work-gap, 0px) / 4);
+  }
+}
+
 /* 스크롤바 숨김 */
 .no-scrollbar {
   scrollbar-width: none;
