@@ -1,10 +1,8 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import ProjectModal from '@/components/ProjectModal'
 import WorkBlocks from '@/components/WorkBlocks'
-import ScrollTopButton from '@/components/ScrollTopButton'
-import { AVATAR_SRC, getNext, getPrev, getWork, OWNER, works } from '@/lib/works'
+import { getNext, getPrev, getWork, OWNER, works } from '@/lib/works'
 
 export function generateStaticParams() {
   return works.map((w) => ({ slug: w.slug }))
@@ -25,8 +23,13 @@ export async function generateMetadata({
 }
 
 /**
- * 주소로 직접 들어왔거나 새로고침했을 때 보이는 전체 페이지.
- * (목록에서 클릭하면 app/@modal 쪽이 대신 창으로 띄운다)
+ * 주소로 직접 들어왔거나 새로고침했을 때 보이는 화면.
+ * (목록에서 클릭하면 app/@modal 쪽이 인터셉트해서 같은 것을 창으로 띄운다)
+ *
+ * 예전에는 여기서 헤더·닫기 버튼을 따로 그렸는데, 그러다 보니 새로고침만
+ * 하면 어두운 배경도 이전/다음 버튼도 없는 다른 화면이 됐다. 양쪽이 따로
+ * 관리되면서 버튼 크기도 어긋났다. 같은 컴포넌트를 쓰고 닫기 동작만
+ * 다르게 준다(standalone).
  */
 export default async function WorkPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -37,78 +40,14 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
   const next = getNext(slug)
 
   return (
-    <main className="min-h-[100svh]">
-      <div className="mx-auto w-full max-w-[1200px]">
-        {/* 모달과 같은 동작 — sticky 를 빼서 휠을 내리면 사라지고
-            맨 위로 올라오면 다시 나타난다. 닫기는 아래 화면 고정. */}
-        <header className="flex items-center justify-between gap-4 border-b border-black/[0.06] bg-white px-5 py-4 md:px-8 md:py-5">
-          <div className="min-w-0">
-            <h1 className="truncate text-[1.15rem] font-bold tracking-tight text-[#0a0a0a] md:text-[1.45rem]">
-              {work.title}
-            </h1>
-            <div className="mt-1.5 flex items-center gap-2.5">
-              <Image
-                src={AVATAR_SRC}
-                alt={OWNER}
-                width={28}
-                height={28}
-                className="h-[26px] w-[26px] shrink-0 rounded-full object-cover md:h-7 md:w-7"
-              />
-              <span className="text-[0.85rem] font-medium text-[#5a5a5a] md:text-[0.9rem]">
-                {OWNER}
-              </span>
-            </div>
-          </div>
-
-        </header>
-
-        {/* 닫기 — 화면 우측 상단 고정 (헤더가 사라져도 남는다) */}
-        <Link
-          href="/"
-          aria-label="닫기"
-          className="fixed right-4 top-4 z-20 grid h-12 w-12 place-items-center rounded-full bg-white/90 text-[#1a1a1a] shadow-lg backdrop-blur-sm transition-colors hover:bg-white md:top-5"
-        >
-          <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden>
-            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </Link>
-
-        {/* 맨 위로 — 여기서는 창이 스크롤되므로 scrollerRef 없이 쓴다 */}
-        <ScrollTopButton className="bottom-6 right-4 md:bottom-8" />
-
-        <WorkBlocks work={work} />
-
-        <nav className="grid grid-cols-2 gap-3 border-t border-black/[0.06] px-5 py-9 md:px-8">
-          {prev ? (
-            <Link
-              href={`/works/${prev.slug}`}
-              className="flex flex-col gap-1 rounded-xl bg-[#f7f7f7] px-4 py-4 transition-colors hover:bg-[#efefef]"
-            >
-              <span className="text-[0.62rem] font-semibold tracking-[0.1em] text-[#b4b4b4]">
-                ← 이전
-              </span>
-              <span className="line-clamp-2 text-[0.85rem] font-semibold leading-snug text-[#3d3d3d]">
-                {prev.title}
-              </span>
-            </Link>
-          ) : (
-            <span />
-          )}
-          {next && (
-            <Link
-              href={`/works/${next.slug}`}
-              className="flex flex-col gap-1 rounded-xl bg-[#f7f7f7] px-4 py-4 text-right transition-colors hover:bg-[#efefef]"
-            >
-              <span className="text-[0.62rem] font-semibold tracking-[0.1em] text-[#b4b4b4]">
-                다음 →
-              </span>
-              <span className="line-clamp-2 text-[0.85rem] font-semibold leading-snug text-[#3d3d3d]">
-                {next.title}
-              </span>
-            </Link>
-          )}
-        </nav>
-      </div>
-    </main>
+    <ProjectModal
+      standalone
+      title={work.title}
+      owner={OWNER}
+      prev={prev && { slug: prev.slug, title: prev.title }}
+      next={next && { slug: next.slug, title: next.title }}
+    >
+      <WorkBlocks work={work} />
+    </ProjectModal>
   )
 }

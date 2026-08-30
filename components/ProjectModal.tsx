@@ -18,25 +18,35 @@ const EASE = [0.22, 1, 0.36, 1] as const
  *  모바일   — 전체화면. 흰 헤더에 제목·프로필·닫기 버튼.
  *
  *  닫기: X 버튼 · 배경 클릭 · ESC
+ *
+ *  standalone — 주소로 직접 들어오거나 새로고침했을 때 쓰는 모드.
+ *  인터셉팅 라우트는 목록에서 클릭할 때만 동작하므로, 새로고침하면
+ *  app/works/[slug] 가 대신 그려진다. 예전엔 그쪽이 헤더·닫기를 따로 갖고
+ *  있어서 어두운 배경도 이전/다음 버튼도 없이 전혀 다른 화면이 됐다.
+ *  같은 컴포넌트를 쓰되 닫기만 뒤로가기 대신 목록(/)으로 보낸다.
  */
 export default function ProjectModal({
   title,
   owner,
   prev,
   next,
+  standalone = false,
   children,
 }: {
   title: string
   owner: string
   prev: { slug: string; title: string } | null
   next: { slug: string; title: string } | null
+  /** 주소로 직접 들어온 경우 — 뒤로 갈 곳이 없으므로 닫기가 목록으로 간다 */
+  standalone?: boolean
   children: React.ReactNode
 }) {
   const router = useRouter()
   const scrollRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
 
-  const close = () => router.back()
+  // 직접 들어온 화면에서 뒤로가기를 하면 이 사이트 밖으로 나갈 수 있다
+  const close = () => (standalone ? router.push('/') : router.back())
 
   // ESC로 닫기 + 뒤 페이지 스크롤 잠금
   useEffect(() => {
@@ -58,7 +68,12 @@ export default function ProjectModal({
   }, [title])
 
   return (
-    <div role="dialog" aria-modal="true" aria-label={title} className="fixed inset-0 z-50">
+    <div
+      role={standalone ? undefined : 'dialog'}
+      aria-modal={standalone ? undefined : true}
+      aria-label={standalone ? undefined : title}
+      className="fixed inset-0 z-50"
+    >
       {/* 어두운 배경 — 페이드만 한다.
           확대되는 레이어와 분리해야 한다. 한 겹으로 두고 scale을 걸면
           축소 상태(0.94)에서 화면 가장자리에 뒤 페이지가 비친다. */}
