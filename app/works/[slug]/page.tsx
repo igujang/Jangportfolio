@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import WorkBlocks from '@/components/WorkBlocks'
+import ScrollTopButton from '@/components/ScrollTopButton'
 import { AVATAR_SRC, getNext, getPrev, getWork, OWNER, works } from '@/lib/works'
 
 export function generateStaticParams() {
@@ -71,6 +72,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </Link>
+
+        {/* 맨 위로 — 여기서는 창이 스크롤되므로 scrollerRef 없이 쓴다 */}
+        <ScrollTopButton className="bottom-6 right-4 md:bottom-8 md:right-5" />
 
         <WorkBlocks work={work} />
 

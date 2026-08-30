@@ -63,7 +63,7 @@ const PROJECTS = [
   { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK', gap: 60 },
   { n: '12', dir: '12 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 0 },
   { n: '13', dir: '13. 주요 기업 · 공공기관 협업', slug: 'clients', title: '주요 기업 · 공공기관 협업', category: 'CLIENTS', gap: 0 },
-  { n: '14', dir: '14 로고 디자인 작업 아카이브', slug: 'logo-archive', title: '로고 디자인 작업 아카이브', category: 'LOGO', gap: 0, grid: true },
+  { n: '14', dir: '14 로고 디자인 작업 아카이브', slug: 'logo-archive', title: '로고디자인 아카이브', category: 'LOGO', gap: 0, grid: true },
 ]
 
 const isImage = (f) => /\.(jpe?g|png|webp)$/i.test(f)

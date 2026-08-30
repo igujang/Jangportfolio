@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { AVATAR_SRC } from '@/lib/works'
+import ScrollTopButton from '@/components/ScrollTopButton'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -160,6 +161,10 @@ export default function ProjectModal({
         >
           <XIcon className="h-5 w-5 md:h-6 md:w-6" />
         </button>
+
+        {/* ── 맨 위로 ──
+            데스크탑은 우측 하단에 '다음'이 있어 그 위로 올린다. */}
+        <ScrollTopButton scrollerRef={scrollRef} className="bottom-6 right-4 md:bottom-32 md:right-5" />
 
         {/* ── 데스크탑 전용: 좌우 하단 이전/다음 ── */}
         {prev && <SideNav dir="prev" slug={prev.slug} label="이전" />}
