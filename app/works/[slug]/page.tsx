@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import WorkBlocks from '@/components/WorkBlocks'
-import { getNext, getPrev, getWork, OWNER, works } from '@/lib/works'
+import { AVATAR_SRC, getNext, getPrev, getWork, OWNER, works } from '@/lib/works'
 
 export function generateStaticParams() {
   return works.map((w) => ({ slug: w.slug }))
@@ -47,7 +47,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             </h1>
             <div className="mt-1.5 flex items-center gap-2.5">
               <Image
-                src="/avatar.jpg"
+                src={AVATAR_SRC}
                 alt={OWNER}
                 width={28}
                 height={28}

@@ -1,4 +1,5 @@
 import data from '@/content/works.json'
+import profile from '@/content/profile.json'
 
 export type Block =
   | { type: 'image'; src: string; w: number; h: number }
@@ -26,6 +27,11 @@ export type Work = {
 export const works = data as Work[]
 
 export const OWNER = '장동호'
+
+/** 프로필 사진 주소 — 내용 해시가 붙어 있어 사진을 바꾸면 주소도 바뀐다.
+ *  (파일명이 그대로면 브라우저가 예전 사진을 계속 보여준다) */
+export const PROFILE_SRC = profile.profile
+export const AVATAR_SRC = profile.avatar
 
 export function getWork(slug: string) {
   return works.find((w) => w.slug === slug)

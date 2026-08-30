@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import type { Work } from '@/lib/works'
+import { PROFILE_SRC, type Work } from '@/lib/works'
 
 const NAME = '장동호 디자이너'
 const NAME_ROW = -1 // 이름 행. 프로젝트는 0..n-1
@@ -220,7 +220,7 @@ function ThumbBody({ work }: { work: Work | null }) {
   if (!work) {
     return (
       <Image
-        src="/profile.jpg"
+        src={PROFILE_SRC}
         alt="장동호"
         fill
         sizes="400px"

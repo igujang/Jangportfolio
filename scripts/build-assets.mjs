@@ -12,7 +12,8 @@
  *  - skipFirst  : 첫 장(표지)을 본문에서 뺀다. 원본은 그대로 두고 여기서만
  *                 걸러내므로, 되돌리려면 이 줄만 지우면 된다.
  */
-import { readdir, mkdir, rm, writeFile, readFile, stat } from 'node:fs/promises'
+import { readdir, mkdir, rm, writeFile, readFile, stat, rename } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import path from 'node:path'
@@ -39,7 +40,7 @@ const PROJECTS = [
   { n: '09', dir: '09 판판서양주점 I BX Design', slug: 'panpan', title: '판판서양주점 I BX Design', category: 'PUB', gap: 60 },
   { n: '10', dir: '10 청해주조 I BX Design', slug: 'cheonghae', title: '청해주조 I BX Design', category: 'BREWERY', gap: 60, skipFirst: true },
   { n: '11', dir: '11 웹개발자로드맵 I Book Cover Design', slug: 'web-roadmap', title: '웹개발자로드맵 I Book Cover Design', category: 'BOOK', gap: 60 },
-  { n: '12', dir: '12 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 60 },
+  { n: '12', dir: '12 대학교, 기업 교육 및 행사 디자인', slug: 'event-design', title: '대학교, 기업 교육 및 행사 디자인', category: 'EVENT', gap: 0 },
 ]
 
 const isImage = (f) => /\.(jpe?g|png|webp)$/i.test(f)
@@ -158,6 +159,10 @@ async function buildProfile() {
   }
 
   const dir = path.join(ROOT, 'public')
+  // 지난 빌드가 남긴 해시 이름 파일을 지운다 (public/ 은 통째로 비우지 않는다)
+  for (const f of await readdir(dir)) {
+    if (/^(profile|avatar)\.[0-9a-f]{8}\.jpg$/.test(f)) await rm(path.join(dir, f))
+  }
   if (thumbSrc) {
     await sharp(thumbSrc, { limitInputPixels: false })
       .resize(800, 800, { fit: 'cover', position: 'attention', kernel: 'lanczos3' })
@@ -172,11 +177,37 @@ async function buildProfile() {
       .jpeg({ quality: 92, chromaSubsampling: '4:4:4', mozjpeg: true })
       .toFile(path.join(dir, 'avatar.jpg'))
   }
-  console.log(`  프로필 사진 → /profile.jpg (${path.basename(thumbSrc ?? '')}) · /avatar.jpg (${path.basename(avatarSrc ?? '')})`)
+  const out = {
+    profile: thumbSrc ? await fingerprint(path.join(dir, 'profile.jpg'), '') : '/profile.jpg',
+    avatar: avatarSrc ? await fingerprint(path.join(dir, 'avatar.jpg'), '') : '/avatar.jpg',
+  }
+  await mkdir(path.join(ROOT, 'content'), { recursive: true })
+  await writeFile(path.join(ROOT, 'content', 'profile.json'), JSON.stringify(out, null, 2))
+  console.log(`  프로필 사진 → ${out.profile} (${path.basename(thumbSrc ?? '')}) · ${out.avatar} (${path.basename(avatarSrc ?? '')})`)
   return true
 }
 
 const mb = (n) => (n / 1048576).toFixed(1)
+
+/**
+ * 파일 이름에 내용 해시를 박고 그 주소를 돌려준다.
+ *   thumb.jpg → thumb.ab295a1a.jpg
+ *
+ * 이름이 그대로면 내용을 바꿔도 브라우저가 예전 것을 계속 쓴다. 실제로
+ * 썸네일과 프로필을 갈아 끼웠는데 화면이 그대로라 몇 번 헤맸다. 내용이
+ * 바뀌면 이름이 바뀌므로 강제 새로고침 없이도 항상 최신이 뜬다.
+ *
+ * ?v=해시 쿼리로도 되지만 next/image 가 images.localPatterns 설정을 요구하고,
+ * search 를 생략하면 아무 쿼리나 최적화를 태울 수 있어 문서가 경고한다.
+ * 이름에 박으면 설정이 아예 필요 없다.
+ */
+async function fingerprint(destPath, publicDir) {
+  const h = createHash('md5').update(await readFile(destPath)).digest('hex').slice(0, 8)
+  const ext = path.extname(destPath)
+  const named = `${path.basename(destPath, ext)}.${h}${ext}`
+  await rename(destPath, path.join(path.dirname(destPath), named))
+  return `${publicDir}/${named}`
+}
 
 async function main() {
   await rm(OUT, { recursive: true, force: true })
@@ -214,12 +245,12 @@ async function main() {
         const d = path.join(outDir, 'thumb.mp4')
         const { w, h } = await convertGif(s, d)
         outTotal += (await stat(d)).size
-        thumb = { type: 'video', src: `/works/${p.slug}/thumb.mp4`, w, h }
+        thumb = { type: 'video', src: await fingerprint(d, `/works/${p.slug}`), w, h }
       } else {
         const d = path.join(outDir, 'thumb.jpg')
         const { w, h } = await convertImage(s, d)
         outTotal += (await stat(d)).size
-        thumb = { type: 'image', src: `/works/${p.slug}/thumb.jpg`, w, h }
+        thumb = { type: 'image', src: await fingerprint(d, `/works/${p.slug}`), w, h }
       }
     }
 
@@ -239,12 +270,12 @@ async function main() {
         const d = path.join(outDir, `${idx}.mp4`)
         const { w, h } = await convertGif(s, d)
         outTotal += (await stat(d)).size
-        blocks.push({ type: 'video', src: `/works/${p.slug}/${idx}.mp4`, w, h })
+        blocks.push({ type: 'video', src: await fingerprint(d, `/works/${p.slug}`), w, h })
       } else {
         const d = path.join(outDir, `${idx}.jpg`)
         const { w, h } = await convertImage(s, d)
         outTotal += (await stat(d)).size
-        blocks.push({ type: 'image', src: `/works/${p.slug}/${idx}.jpg`, w, h })
+        blocks.push({ type: 'image', src: await fingerprint(d, `/works/${p.slug}`), w, h })
       }
     }
 

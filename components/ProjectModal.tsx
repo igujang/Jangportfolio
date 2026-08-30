@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
+import { AVATAR_SRC } from '@/lib/works'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -97,7 +98,7 @@ export default function ProjectModal({
                 </h1>
                 <div className="mt-1.5 flex items-center gap-2.5">
                   <Image
-                    src="/avatar.jpg"
+                    src={AVATAR_SRC}
                     alt={owner}
                     width={28}
                     height={28}
