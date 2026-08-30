@@ -383,7 +383,6 @@
     "title": "1853 I BX Design",
     "category": "BIKE SHOP",
     "gap": 60,
-    "skipFirst": true,
     "thumb": {
       "type": "image",
       "src": "/works/1853/thumb.6370c274.jpg",
@@ -393,31 +392,37 @@
     "blocks": [
       {
         "type": "image",
-        "src": "/works/1853/01.c87d6932.jpg",
+        "src": "/works/1853/01.0625b09f.jpg",
         "w": 1920,
         "h": 1080
       },
       {
         "type": "image",
-        "src": "/works/1853/02.2b21192c.jpg",
+        "src": "/works/1853/02.c87d6932.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/1853/03.2b21192c.jpg",
         "w": 1920,
         "h": 3240
       },
       {
         "type": "image",
-        "src": "/works/1853/03.ff1b2494.jpg",
+        "src": "/works/1853/04.ff1b2494.jpg",
         "w": 1920,
         "h": 1080
       },
       {
         "type": "image",
-        "src": "/works/1853/04.85584c3b.jpg",
+        "src": "/works/1853/05.85584c3b.jpg",
         "w": 1920,
         "h": 1080
       },
       {
         "type": "image",
-        "src": "/works/1853/05.468affb2.jpg",
+        "src": "/works/1853/06.468affb2.jpg",
         "w": 1920,
         "h": 1080
       }
@@ -745,7 +750,6 @@
     "title": "청해주조 I BX Design",
     "category": "BREWERY",
     "gap": 60,
-    "skipFirst": true,
     "thumb": {
       "type": "image",
       "src": "/works/cheonghae/thumb.a94abb93.jpg",
@@ -755,25 +759,31 @@
     "blocks": [
       {
         "type": "image",
-        "src": "/works/cheonghae/01.b11f929a.jpg",
+        "src": "/works/cheonghae/01.957cc129.jpg",
         "w": 1920,
         "h": 1080
       },
       {
         "type": "image",
-        "src": "/works/cheonghae/02.0f5359c9.jpg",
+        "src": "/works/cheonghae/02.b11f929a.jpg",
         "w": 1920,
         "h": 1080
       },
       {
         "type": "image",
-        "src": "/works/cheonghae/03.68485c9e.jpg",
+        "src": "/works/cheonghae/03.0f5359c9.jpg",
         "w": 1920,
         "h": 1080
       },
       {
         "type": "image",
-        "src": "/works/cheonghae/04.84e6a4e6.jpg",
+        "src": "/works/cheonghae/04.68485c9e.jpg",
+        "w": 1920,
+        "h": 1080
+      },
+      {
+        "type": "image",
+        "src": "/works/cheonghae/05.84e6a4e6.jpg",
         "w": 1920,
         "h": 1080
       }
