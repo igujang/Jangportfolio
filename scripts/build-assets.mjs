@@ -1,6 +1,6 @@
 /**
  * 원본 자료(Project/)를 웹용으로 변환해 public/works/ 와 content/works.json 을 만든다.
- *  - 이미지  : 긴 변 2800px 이하로 축소, 고품질 압축
+ *  - 이미지  : 5MB 미만이면 손대지 않고 그대로 복사. 그 이상만 줄여 굽는다.
  *  - GIF     : mp4 루프 영상으로 변환 (화질↑ 용량↓)
  *  - .txt    : 비메오 iframe에서 영상 ID·비율·루프여부 추출
  * 원본은 절대 수정하지 않는다.
@@ -12,7 +12,7 @@
  *  - skipFirst  : 첫 장(표지)을 본문에서 뺀다. 원본은 그대로 두고 여기서만
  *                 걸러내므로, 되돌리려면 이 줄만 지우면 된다.
  */
-import { readdir, mkdir, rm, writeFile, readFile, stat, rename } from 'node:fs/promises'
+import { readdir, mkdir, rm, writeFile, readFile, stat, rename, copyFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
@@ -24,8 +24,28 @@ const ROOT = process.cwd()
 const SRC = path.join(ROOT, 'Project')
 const OUT = path.join(ROOT, 'public', 'works')
 
-const MAX_EDGE = 2800 // 비핸스 권장 1400px의 2배 (고해상도 화면 대응)
-const JPEG_Q = 90 // 일반 웹 기본(75~80)보다 높게
+/**
+ * 이미지는 원칙적으로 손대지 않는다.
+ *
+ * 예전에는 전부 긴 변 2800px + JPEG q90 으로 다시 구웠는데, 여기에 next/image
+ * 의 AVIF q75 재인코딩까지 겹쳐 화질이 눈에 띄게 무너졌다.
+ * 실측(주요기업_1.jpg): 원본 902KB → 변환 319KB → 브라우저 39KB. 원본의 4%.
+ *
+ * 그래서 5MB 미만은 원본을 그대로 복사하고, 그보다 큰 것만 줄여 굽는다.
+ * 현재 자료 중 5MB 를 넘는 건 대학교_기업_4.jpg(5.2MB) 한 장뿐이다.
+ */
+const KEEP_UNDER = 5 * 1048576 // 이보다 작으면 원본 그대로
+
+/** 줄여야 할 때는 '긴 변'이 아니라 '가로'를 기준으로 한다.
+ *  레이아웃이 가로 폭으로 정해지므로, 세로로 긴 이미지의 긴 변을 자르면
+ *  정작 중요한 가로 해상도가 깎인다 (대학교_기업_1: 1920 → 1159, -40%). */
+const MAX_WIDTH = 2400
+const JPEG_Q = 95
+
+/** 썸네일은 작업물이 아니라 목록용 축소본이다. 화면에서 400px 남짓으로만
+ *  보이므로 고해상도 화면 기준 800px 이면 충분하다. */
+const THUMB_EDGE = 800
+const THUMB_Q = 92
 
 /** "순서와 카테고리 분류.txt" 기준 */
 const PROJECTS = [
@@ -84,29 +104,53 @@ async function parseVimeo(file) {
   }
 }
 
-/** 이미지 축소 + 압축 */
-async function convertImage(src, dest) {
+/**
+ * 본문 이미지. 5MB 미만이면 원본을 그대로 복사한다 — 확장자도 그대로 둔다.
+ * 5MB 이상만 가로 2400px 로 줄이고 JPEG q95 로 굽는다.
+ * 돌려주는 dest 는 실제로 만들어진 파일 경로다(확장자가 달라질 수 있다).
+ */
+async function putImage(src, outDir, base) {
+  const size = (await stat(src)).size
+  if (size < KEEP_UNDER) {
+    const dest = path.join(outDir, `${base}${path.extname(src).toLowerCase()}`)
+    await copyFile(src, dest)
+    const m = await sharp(dest, { limitInputPixels: false }).metadata()
+    return { dest, w: m.width, h: m.height }
+  }
+  const dest = path.join(outDir, `${base}.jpg`)
+  const img = sharp(src, { limitInputPixels: false })
+  const meta = await img.metadata()
+  const pipeline =
+    meta.width > MAX_WIDTH
+      ? img.resize({ width: MAX_WIDTH, kernel: 'lanczos3', withoutEnlargement: true })
+      : img
+  // 투명한 원본(PNG)을 JPEG 으로 구울 때는 흰색으로 깔아야 한다.
+  // sharp 의 기본 합성 색이 검정이라, 그대로 두면 투명 영역이 까맣게 변한다.
+  await pipeline
+    .flatten({ background: '#ffffff' })
+    .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .toFile(dest)
+  const out = await sharp(dest).metadata()
+  return { dest, w: out.width, h: out.height }
+}
+
+/** 목록용 썸네일 — 화면에서 400px 남짓이라 800px 로 줄여 둔다. */
+async function makeThumb(src, dest) {
   const img = sharp(src, { limitInputPixels: false })
   const meta = await img.metadata()
   const long = Math.max(meta.width, meta.height)
   const pipeline =
-    long > MAX_EDGE
+    long > THUMB_EDGE
       ? img.resize({
-          width: meta.width >= meta.height ? MAX_EDGE : null,
-          height: meta.height > meta.width ? MAX_EDGE : null,
+          width: meta.width >= meta.height ? THUMB_EDGE : null,
+          height: meta.height > meta.width ? THUMB_EDGE : null,
           kernel: 'lanczos3',
           withoutEnlargement: true,
         })
       : img
-  // 투명한 원본(PNG)은 반드시 흰색으로 깔고 내려야 한다.
-  // JPEG은 알파를 못 담는데, sharp의 기본 합성 색은 검정이다.
-  // 그대로 두면 투명 영역이 까맣게 변하고(지중서원 SIGN DESIGN),
-  // 가장자리의 반투명 한 줄은 회색 선으로 남는다
-  // (실측: alpha 128 한 줄 → rgb(141,139,140) 가로줄).
-  // 알파가 없는 이미지엔 flatten이 아무 영향을 주지 않는다.
   await pipeline
     .flatten({ background: '#ffffff' })
-    .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .jpeg({ quality: THUMB_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
     .toFile(dest)
   const out = await sharp(dest).metadata()
   return { w: out.width, h: out.height }
@@ -168,7 +212,7 @@ async function buildProfile() {
     await sharp(thumbSrc, { limitInputPixels: false })
       .resize(800, 800, { fit: 'cover', position: 'attention', kernel: 'lanczos3' })
       .flatten({ background: '#ffffff' })
-      .jpeg({ quality: JPEG_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
+      .jpeg({ quality: THUMB_Q, chromaSubsampling: '4:4:4', mozjpeg: true })
       .toFile(path.join(dir, 'profile.jpg'))
   }
   if (avatarSrc) {
@@ -249,7 +293,7 @@ async function main() {
         thumb = { type: 'video', src: await fingerprint(d, `/works/${p.slug}`), w, h }
       } else {
         const d = path.join(outDir, 'thumb.jpg')
-        const { w, h } = await convertImage(s, d)
+        const { w, h } = await makeThumb(s, d)
         outTotal += (await stat(d)).size
         thumb = { type: 'image', src: await fingerprint(d, `/works/${p.slug}`), w, h }
       }
@@ -273,10 +317,9 @@ async function main() {
         outTotal += (await stat(d)).size
         blocks.push({ type: 'video', src: await fingerprint(d, `/works/${p.slug}`), w, h })
       } else {
-        const d = path.join(outDir, `${idx}.jpg`)
-        const { w, h } = await convertImage(s, d)
-        outTotal += (await stat(d)).size
-        blocks.push({ type: 'image', src: await fingerprint(d, `/works/${p.slug}`), w, h })
+        const { dest, w, h } = await putImage(s, outDir, idx)
+        outTotal += (await stat(dest)).size
+        blocks.push({ type: 'image', src: await fingerprint(dest, `/works/${p.slug}`), w, h })
       }
     }
 

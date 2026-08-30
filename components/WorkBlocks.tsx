@@ -56,6 +56,13 @@ export default function WorkBlocks({ work }: { work: Work }) {
                 height={b.h}
                 sizes="(max-width: 1200px) 100vw, 1200px"
                 priority={i < 2}
+                /* 재인코딩 금지 — 파일을 그대로 내려보낸다.
+                   next/image 는 기본으로 AVIF q75 로 다시 굽는데, 이미 압축된
+                   작업물을 한 번 더 굽는 것이라 화질이 눈에 띄게 무너졌다.
+                   실측(주요기업_1): 원본 902KB → 브라우저 39KB, 원본의 4%.
+                   빌드 단계에서 5MB 미만은 원본 그대로 두므로, 여기서도
+                   손대지 않아야 원본 화질이 그대로 전달된다. */
+                unoptimized
                 className="block h-auto w-full"
               />
             )
