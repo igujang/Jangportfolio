@@ -6,6 +6,15 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: '이력 | 장동호 디자이너',
   description: 'BX 디자이너 장동호의 경력과 이력입니다.',
+  alternates: { canonical: '/about' },
+  openGraph: {
+    title: '이력 | 장동호 디자이너',
+    description: 'BX 디자이너 장동호의 경력과 이력입니다.',
+    url: '/about',
+    siteName: '장동호 디자이너',
+    locale: 'ko_KR',
+    type: 'profile',
+  },
 }
 
 /**
@@ -15,6 +24,8 @@ export const metadata: Metadata = {
 type Node =
   | { t: 'h2'; s: string }
   | { t: 'h3'; s: string }
+  /** 한 경력 안에서 목록을 갈라주는 작은 라벨 — 주요 업무 / 주요 프로젝트 */
+  | { t: 'h4'; s: string }
   /** 소제목 바로 아래 한 줄 — 재직 기간, 발급 기관 같은 부가 정보 */
   | { t: 'meta'; s: string }
   | { t: 'p'; s: string }
@@ -45,7 +56,8 @@ function parse(md: string): Node[] {
       continue
     }
     flush()
-    if (line.startsWith('### ')) out.push({ t: 'h3', s: line.slice(4) })
+    if (line.startsWith('#### ')) out.push({ t: 'h4', s: line.slice(5) })
+    else if (line.startsWith('### ')) out.push({ t: 'h3', s: line.slice(4) })
     else if (line.startsWith('## ')) out.push({ t: 'h2', s: line.slice(3) })
     else if (ONLY_LINKS.test(line))
       out.push({
@@ -117,6 +129,15 @@ export default async function AboutPage() {
                 >
                   {n.s}
                 </h3>
+              )
+            case 'h4':
+              return (
+                <h4
+                  key={i}
+                  className="mt-6 text-[clamp(0.72rem,0.86vw,0.82rem)] font-semibold tracking-[0.1em] text-[#8a8a8a]"
+                >
+                  {n.s}
+                </h4>
               )
             case 'meta':
               return (

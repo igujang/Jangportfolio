@@ -16,9 +16,28 @@ export async function generateMetadata({
   const { slug } = await params
   const work = getWork(slug)
   if (!work) return {}
+
+  const title = `${work.title} | 장동호 디자이너`
+  const description = `${work.category} · ${work.title}`
+  const url = `/works/${work.slug}`
+  /** 썸네일이 영상인 프로젝트는 링크 미리보기에 쓸 수 없다 — 기본 OG 이미지로 넘어간다 */
+  const image = work.thumb?.type === 'image' ? work.thumb : null
+
   return {
-    title: `${work.title} | 장동호 디자이너`,
-    description: `${work.category} · ${work.title}`,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: '장동호 디자이너',
+      locale: 'ko_KR',
+      type: 'article',
+      ...(image && {
+        images: [{ url: image.src, width: image.w, height: image.h, alt: work.title }],
+      }),
+    },
   }
 }
 

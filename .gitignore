@@ -47,3 +47,6 @@ out/
 memo.txt
 /Font/
 /Jand dong ho profile/
+
+# 타입 빌드 캐시
+tsconfig.tsbuildinfo
