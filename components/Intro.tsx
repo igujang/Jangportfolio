@@ -1,12 +1,17 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { motion, useAnimationControls } from 'framer-motion'
 
 /** 같은 세션에서 한 번 본 사람에게는 다시 보이지 않는다 */
 const SEEN_KEY = 'intro-seen'
 
 const EASE = [0.22, 1, 0.36, 1] as const
+
+/** 이미 본 사람에게서 인트로를 걷어내는 일은 화면이 그려지기 전에 끝나야 한다.
+   useEffect 로 하면 걷히는 순간이 한 박자 늦어 흰 화면이 잠깐 남는다.
+   서버에서는 useLayoutEffect 가 경고를 내므로 갈아 끼운다. */
+const useBeforePaint = typeof window === 'undefined' ? useEffect : useLayoutEffect
 /** 안내 문구가 숨쉬는 속도 */
 const BREATHE = 'easeInOut' as const
 
@@ -64,7 +69,7 @@ export default function Intro() {
     setPhase('greet')
   }, [clearTimers])
 
-  useEffect(() => {
+  useBeforePaint(() => {
     let skip = false
     try {
       skip = !!sessionStorage.getItem(SEEN_KEY)

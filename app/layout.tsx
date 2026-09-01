@@ -33,8 +33,7 @@ export default function RootLayout({
   modal: React.ReactNode
 }) {
   return (
-    // 인트로 스킵 스크립트가 리액트보다 먼저 <html> 에 표시를 단다
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko">
       <body>
         {children}
         {modal}

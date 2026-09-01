@@ -169,9 +169,3 @@ body.modal-open {
     transition-duration: 0.01ms !important;
   }
 }
-
-/* 같은 세션에서 이미 본 사람에게는 인트로가 한 프레임도 보이지 않는다.
-   app/page.tsx 의 인라인 스크립트가 그리기 전에 표시를 달아 준다. */
-html[data-intro='seen'] #intro {
-  display: none;
-}
