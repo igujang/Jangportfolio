@@ -121,12 +121,15 @@ export default function Intro() {
   return (
     <motion.div
       id="intro"
+      role="button"
+      tabIndex={0}
+      aria-label="들어가기"
       // 노크 중에 누르면 인사말로, 인사말에서 누르면 안으로.
       // 2초를 못 기다리는 사람을 붙잡아 둘 이유가 없다.
       onClick={greeting ? enter : skipToGreet}
       animate={{ y: phase === 'leaving' ? '-100%' : 0 }}
       transition={{ duration: LEAVE / 1000, ease: EASE }}
-      className="fixed inset-0 z-50 flex cursor-pointer flex-col items-center justify-center overflow-hidden bg-[#ffffff] px-[5vw]"
+      className="fixed inset-0 z-[60] flex cursor-pointer flex-col items-center justify-center overflow-hidden bg-[#ffffff] px-[5vw]"
     >
       <motion.div animate={shake} className="relative flex flex-col items-center">
         {!greeting && (
@@ -191,19 +194,13 @@ export default function Intro() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.44, ease: EASE, delay: 0.44 }}
-              className="mt-1 flex items-center gap-[0.35em] text-[clamp(1.6rem,3.4vw,3rem)] font-medium tracking-tight text-[#0a0a0a] underline decoration-[#d6d6d6] decoration-2 underline-offset-[10px] transition-colors duration-200 group-hover:decoration-[#0a0a0a]"
+              className="mt-1 text-[clamp(1.6rem,3.4vw,3rem)] font-medium tracking-tight text-[#0a0a0a] underline decoration-[#d6d6d6] decoration-2 underline-offset-[10px] transition-colors duration-200 group-hover:decoration-[#0a0a0a]"
             >
               디자이너 장동호입니다
-              <span
-                aria-hidden
-                className="inline-block no-underline transition-transform duration-200 group-hover:translate-x-1"
-              >
-                →
-              </span>
             </motion.span>
 
             {/* 눌러야 하는 줄 모르고 멈춰 있는 사람을 위한 최소한의 안내.
-                밑줄과 화살표로 이미 말하고 있으니 아주 작게만 둔다. */}
+                밑줄이 이미 말하고 있으니 아주 작게만 둔다. */}
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
