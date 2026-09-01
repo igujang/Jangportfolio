@@ -16,9 +16,15 @@ const EASE = [0.22, 1, 0.36, 1] as const
 const HIT_1 = 300
 const HIT_2 = 550
 /** 두 번 두드리고 문 앞에서 기다리는 시간까지 포함한 시점 */
-const TO_GREET = 1050
+const TO_GREET = 1100
 /** 오버레이가 걷히는 시간 */
 const LEAVE = 560
+
+/** 두 글자를 나란히 놓지 않는다. 서로 어긋나게 놓아야 두드린 반동처럼 보인다. */
+const WORDS = [
+  { text: 'knock,', tilt: -2.6, shift: '-0.07em' },
+  { text: 'knock.', tilt: 1.8, shift: '0.09em' },
+]
 
 type Phase = 'knock' | 'greet' | 'leaving' | 'done'
 
@@ -76,10 +82,17 @@ export default function Intro() {
     const at = (fn: () => void, ms: number) => {
       timers.current.push(window.setTimeout(fn, ms))
     }
-    // 두드릴 때마다 화면이 살짝 흔들린다. 이게 '쳤다'는 감각을 만든다.
+    // 두드릴 때마다 화면이 통째로 튕긴다. 이게 '쳤다'는 감각을 만든다.
+    // 두 번째를 더 세게 쳐야 리듬이 산다.
     const knock = (n: number) => () => {
       setHits(n)
-      shake.start({ x: [0, -3, 2, 0], transition: { duration: 0.16, ease: 'easeOut' } })
+      const k = n === 2 ? 1.35 : 1
+      shake.start({
+        x: [0, -9 * k, 6 * k, -3 * k, 0],
+        y: [0, 5 * k, -3 * k, 1 * k, 0],
+        rotate: [0, -0.7 * k, 0.45 * k, 0],
+        transition: { duration: 0.3, ease: 'easeOut' },
+      })
     }
     at(knock(1), HIT_1)
     at(knock(2), HIT_2)
@@ -113,54 +126,93 @@ export default function Intro() {
       onClick={greeting ? enter : skipToGreet}
       animate={{ y: phase === 'leaving' ? '-100%' : 0 }}
       transition={{ duration: LEAVE / 1000, ease: EASE }}
-      className="fixed inset-0 z-50 flex cursor-pointer flex-col items-center justify-center bg-[#ffffff] px-[5vw]"
+      className="fixed inset-0 z-50 flex cursor-pointer flex-col items-center justify-center overflow-hidden bg-[#ffffff] px-[5vw]"
     >
-      <motion.div animate={shake} className="flex flex-col items-center">
+      <motion.div animate={shake} className="relative flex flex-col items-center">
         {!greeting && (
-          <p className="flex gap-[0.3em] text-[clamp(1.6rem,4vw,3.2rem)] font-medium tracking-tight text-[#0a0a0a]">
-            {['knock,', 'knock.'].map((word, i) => (
-              <motion.span
-                key={word}
-                initial={{ opacity: 0, y: -6, scale: 1.04 }}
-                animate={hits > i ? { opacity: 1, y: 0, scale: 1 } : {}}
-                // 페이드인은 안 된다. 노크는 타격이라 툭 나타나야 한다.
-                transition={{ duration: 0.06, ease: 'easeOut' }}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </p>
+          <>
+            {/* 두드린 자리에서 퍼지는 파장 */}
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              {WORDS.map((w, i) =>
+                hits > i ? (
+                  <motion.span
+                    key={`ring-${w.text}`}
+                    initial={{ scale: 0.25, opacity: 0.5 }}
+                    animate={{ scale: 2.1, opacity: 0 }}
+                    transition={{ duration: 0.85, ease: 'easeOut' }}
+                    className="absolute h-[34vmin] w-[34vmin] rounded-full border border-[#d6d6d6]"
+                  />
+                ) : null
+              )}
+            </span>
+
+            <p className="relative flex items-baseline gap-[0.3em] text-[clamp(2rem,6.4vw,5.2rem)] font-bold tracking-tight text-[#0a0a0a]">
+              {WORDS.map((w, i) => (
+                <span
+                  key={w.text}
+                  className="inline-block"
+                  style={{ transform: `translateY(${w.shift})` }}
+                >
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, scale: 1.45, rotate: w.tilt * 2.4 }}
+                    animate={hits > i ? { opacity: 1, scale: 1, rotate: w.tilt } : {}}
+                    // 페이드인은 안 된다. 노크는 타격이라 튕기듯 박혀야 한다.
+                    transition={{ type: 'spring', stiffness: 1100, damping: 15, mass: 0.5 }}
+                  >
+                    {w.text}
+                  </motion.span>
+                </span>
+              ))}
+            </p>
+          </>
         )}
 
         {greeting && (
-          <button
+          <motion.button
             type="button"
             onClick={enter}
-            className="group flex flex-col items-center text-center break-keep"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 26 }}
+            className="group flex cursor-pointer flex-col items-center text-center break-keep"
           >
-            {['만나서 반갑습니다', '디자이너 장동호입니다'].map((line, i) => (
-              <motion.span
-                key={line}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.44, ease: EASE, delay: 0.2 + i * 0.3 }}
-                className={`text-[clamp(1.6rem,3.4vw,3rem)] tracking-tight text-[#0a0a0a] ${
-                  i === 0 ? 'font-bold' : 'font-medium'
-                } underline decoration-transparent decoration-2 underline-offset-[10px] transition-colors group-hover:decoration-[#0a0a0a]`}
-              >
-                {line}
-              </motion.span>
-            ))}
+            <motion.span
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.44, ease: EASE, delay: 0.18 }}
+              className="text-[clamp(1.6rem,3.4vw,3rem)] font-bold tracking-tight text-[#0a0a0a]"
+            >
+              만나서 반갑습니다
+            </motion.span>
 
+            {/* 이 줄이 문고리다 — 밑줄을 늘 보이게 둬서 누를 것임을 알린다 */}
+            <motion.span
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.44, ease: EASE, delay: 0.44 }}
+              className="mt-1 flex items-center gap-[0.35em] text-[clamp(1.6rem,3.4vw,3rem)] font-medium tracking-tight text-[#0a0a0a] underline decoration-[#d6d6d6] decoration-2 underline-offset-[10px] transition-colors duration-200 group-hover:decoration-[#0a0a0a]"
+            >
+              디자이너 장동호입니다
+              <span
+                aria-hidden
+                className="inline-block no-underline transition-transform duration-200 group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </motion.span>
+
+            {/* 눌러야 하는 줄 모르고 멈춰 있는 사람을 위한 최소한의 안내.
+                밑줄과 화살표로 이미 말하고 있으니 아주 작게만 둔다. */}
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, ease: EASE, delay: 0.9 }}
-              className="mt-[4vh] text-[0.8rem] font-semibold tracking-[0.14em] text-[#b4b4b4]"
+              transition={{ duration: 0.5, ease: EASE, delay: 1.1 }}
+              className="mt-[3.5vh] text-[0.62rem] font-semibold tracking-[0.2em] text-[#c4c4c4]"
             >
               CLICK TO ENTER
             </motion.span>
-          </button>
+          </motion.button>
         )}
       </motion.div>
     </motion.div>
