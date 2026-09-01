@@ -205,7 +205,7 @@ export default function Intro() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: EASE, delay: 1.1 }}
-              className="mt-[3.5vh] text-[0.62rem] font-semibold tracking-[0.2em] text-[#c4c4c4]"
+              className="mt-[3.5vh] text-[0.8rem] font-normal tracking-[0.22em] text-[#c4c4c4]"
             >
               CLICK TO ENTER
             </motion.span>
