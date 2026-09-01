@@ -7,6 +7,8 @@ import { motion, useAnimationControls } from 'framer-motion'
 const SEEN_KEY = 'intro-seen'
 
 const EASE = [0.22, 1, 0.36, 1] as const
+/** 안내 문구가 숨쉬는 속도 */
+const BREATHE = 'easeInOut' as const
 
 /** 노크 두 번 사이의 간격(ms).
  *
@@ -199,19 +201,31 @@ export default function Intro() {
               디자이너 장동호입니다
             </motion.span>
 
-            {/* 눌러야 하는 줄 모르고 멈춰 있는 사람을 위한 최소한의 안내.
-                밑줄이 이미 말하고 있으니 아주 작게만 둔다. */}
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, ease: EASE, delay: 1.1 }}
-              className="mt-[3.5vh] text-[0.8rem] font-normal tracking-[0.22em] text-[#c4c4c4]"
-            >
-              CLICK TO ENTER
-            </motion.span>
           </motion.button>
         )}
       </motion.div>
+
+      {/* 안내는 인사말에 붙이지 않는다. 붙이면 큰 글자 두 줄 아래 작은 글자가
+          하나 매달린 꼴이 되어 어디를 눌러야 하는지가 오히려 흐려진다.
+          화면 아래 끝으로 충분히 떼어 놓아야 인사말은 인사말대로 남고
+          이것은 화면 전체에 대한 안내로 읽힌다. */}
+      {greeting && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 1.1 }}
+          className="pointer-events-none absolute inset-x-0 bottom-[7vh] flex justify-center"
+        >
+          {/* 아주 느리게 숨쉬게 둔다. 가만히 있으면 눈이 가지 않는다. */}
+          <motion.span
+            animate={{ opacity: [1, 0.45, 1] }}
+            transition={{ duration: 2.8, ease: BREATHE, repeat: Infinity }}
+            className="text-[0.92rem] font-normal tracking-[0.3em] text-[#c4c4c4]"
+          >
+            CLICK TO ENTER
+          </motion.span>
+        </motion.div>
+      )}
     </motion.div>
   )
 }
