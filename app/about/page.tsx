@@ -102,8 +102,8 @@ export default async function AboutPage() {
       <h1 className="mt-[6vh] text-[clamp(1.6rem,3.4vw,3rem)] font-bold tracking-tight">
         장동호 디자이너
       </h1>
-      <p className="mt-2 text-[clamp(0.75rem,1vw,0.95rem)] font-medium tracking-[0.06em] text-[#b4b4b4]">
-        DESIGNER
+      <p className="mt-2 text-[clamp(0.75rem,1vw,0.95rem)] font-medium tracking-[0.06em] text-[#b4b4b4] tabular-nums">
+        DESIGNER · 1990.06.05
       </p>
 
       {/* break-keep — 한글은 기본값(normal)이면 글자 단위로 끊겨
